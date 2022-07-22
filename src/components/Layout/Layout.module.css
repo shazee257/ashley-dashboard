@@ -1,0 +1,11 @@
+.container {
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+}
+
+.main {
+    display: flex;
+    width: 100%;
+    /* justify-content: center; */
+}

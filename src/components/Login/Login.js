@@ -23,8 +23,6 @@ const Login = () => {
             password: passwordRef.current.value
         };
 
-        // return console.log(user);
-
         await axios.post(`${process.env.NEXT_PUBLIC_baseURL}/users/login`, user)
             .then(({ data }) => {
                 if (data.success) {

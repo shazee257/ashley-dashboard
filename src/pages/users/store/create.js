@@ -49,7 +49,7 @@ export default function NewUser() {
         fd.append("first_name", firstNameRef.current.value);
         fd.append("last_name", lastNameRef.current.value);
         fd.append("email", emailRef.current.value);
-        fd.append("role", "admin");
+        fd.append("role", "store");
         fd.append("phone_no", phoneNoRef.current.value);
         fd.append("password", passwordRef.current.value);
         fd.append("confirm_password", confirmPasswordRef.current.value);
@@ -77,7 +77,7 @@ export default function NewUser() {
             <Grid>
                 <Paper elevation={0} style={{ padding: '20px', width: '400px' }}>
                     <Grid align='left'>
-                        <h2>Create a New Admin User</h2>
+                        <h2>Create a New Store User</h2>
                     </Grid>
                     <br />
                     <form encType='multipart/form-data'>
@@ -103,11 +103,11 @@ export default function NewUser() {
                             inputRef={phoneNoRef} />
                         <br />
                         <TextField className={styles.addProductItem}
-                            label='Password' placeholder='Enter Password'
+                            type='password' label='Password' placeholder='Enter Password'
                             inputRef={passwordRef} />
                         <br />
                         <TextField className={styles.addProductItem}
-                            label='Confirm Password' placeholder='Enter Password again'
+                            type='password' label='Confirm Password' placeholder='Confirm Password'
                             inputRef={confirmPasswordRef} />
                         <br />
                         <br /><br />
@@ -118,18 +118,20 @@ export default function NewUser() {
                             variant="contained"
                             style={{ margin: '8px 0' }}
                             fullWidth>
-                            Create Admin User
+                            Create Store User
                         </Button>
                     </form>
                     <br />
                     <Typography >
-                        <Link href="/users/admin">Back to Admin Users</Link>
+                        <Link href="/users/store">Back to Store Users</Link>
                     </Typography>
                 </Paper>
             </Grid>
             <div className="imageWithButton">
                 <div className={styles.productImage}>
-                    {(selectedFile) && (<img src={image} className={styles.imgObject}></img>)}
+                    {(selectedFile) ? (<img src={image} className={styles.imgObject}></img>)
+                        : (<img src={`${process.env.NEXT_PUBLIC_uploadURL}/avatar.png`} className={styles.imgObject}></img>)}
+
                 </div>
                 <div className={styles.imageButtonContainer}>
                     <div><small>Only jpg, png, gif, svg, webp images are allowed</small></div>

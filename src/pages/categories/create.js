@@ -2,9 +2,17 @@ import styles from "styles/CategoryNew.module.css";
 import { useRef, useState } from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Grid, Paper, TextField, Button, Typography, Link, Select, InputLabel, MenuItem, FormControl } from '@material-ui/core'
+import {
+    Grid, Paper, TextField, Button,
+    Typography, Link, Select, InputLabel,
+    MenuItem, Checkbox,
+    ListItemIcon, ListItemText,
+
+} from '@material-ui/core'
 import axios from 'axios';
 import { showNotification } from "utils/helper";
+import { MenuProps, useStyles, options } from "components/FilterOptions/FilterOptions";
+
 
 export default function NewCategory({ categories }) {
     const titleRef = useRef(null);
@@ -12,6 +20,20 @@ export default function NewCategory({ categories }) {
     const [image, setImage] = useState("");
     const [filename, setFilename] = useState("Choose Image");
     const [selectedFile, setSelectedFile] = useState("");
+
+    const classes = useStyles();
+    const [selected, setSelected] = useState([]);
+    const isAllSelected =
+        options.length > 0 && selected.length === options.length;
+
+    const handleChange = (event) => {
+        const value = event.target.value;
+        if (value[value.length - 1] === "all") {
+            setSelected(selected.length === options.length ? [] : options);
+            return;
+        }
+        setSelected(value);
+    };
 
     const fileSelectedHandler = (e) => {
         const reader = new FileReader();
@@ -86,6 +108,49 @@ export default function NewCategory({ categories }) {
                             ))}
                         </Select>
                         <br /><br />
+                        <InputLabel id="mutiple-select-label">Multiple Select</InputLabel>
+                        <Select
+                            fullWidth
+                            labelId="mutiple-select-label"
+                            multiple
+                            maxRows={4}
+                            value={selected}
+                            onChange={handleChange}
+                            renderValue={(selected) => selected.join(", ")}
+                            MenuProps={MenuProps}
+                        >
+                            <MenuItem
+                                value="all"
+                                classes={{
+                                    root: isAllSelected ? classes.selectedAll : ""
+                                }}
+                            >
+                                <ListItemIcon>
+                                    <Checkbox
+                                        classes={{ indeterminate: classes.indeterminateColor }}
+                                        checked={isAllSelected}
+                                        indeterminate={
+                                            selected.length > 0 && selected.length < options.length
+                                        }
+                                    />
+                                </ListItemIcon>
+                                <ListItemText
+                                    classes={{ primary: classes.selectAllText }}
+                                    primary="Select All"
+                                />
+                            </MenuItem>
+                            {options.map((option) => (
+                                <MenuItem key={option} value={option}>
+                                    <ListItemIcon>
+                                        <Checkbox checked={selected.indexOf(option) > -1} />
+                                    </ListItemIcon>
+                                    <ListItemText primary={option} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <br /><br />
+
+
                         <Button onClick={handleSubmit} type='submit' color='primary' variant="contained" style={{ margin: '8px 0' }} fullWidth>Add Category</Button>
                     </form>
                     <br />

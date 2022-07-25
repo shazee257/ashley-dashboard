@@ -70,6 +70,7 @@ export default function Topbar() {
             <div className={styles.userRole}>
               {`${user.first_name} ${user.last_name}`}
             </div>
+
             <div className={styles.topAvatarContainer}>
               {user.image ? <img src={`${process.env.NEXT_PUBLIC_thumbURL}/${user.image}`} className={styles.topAvatar} />
                 : <img src={`${process.env.NEXT_PUBLIC_uploadURL}/avatar.png`} className={styles.topAvatar} />

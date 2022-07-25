@@ -115,8 +115,7 @@
   .productImage {
     width: 300px;
     margin: 80px 20px;
-    margin-bottom: 0;
-    border-radius: 50%;
+    border-radius: 20px;
     align-content: center;
     border: 3px dashed grey;
     display: flex; 
@@ -126,28 +125,6 @@
   }
 
   .imgObject {
-    margin-top: 2px;
     width: 95%;
-    height: 98%;
-    border-radius: 50%;
-  }
-  
-  .imageButtonContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .imageButton {
-    width: 80%;
-  }
-
-  .imagewithButton {
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    border: 3px dashed grey;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+    height: 95%;
   }

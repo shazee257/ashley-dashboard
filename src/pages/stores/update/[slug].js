@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Grid, Paper, TextField, Button, Typography, Link } from '@material-ui/core'
 import axios from 'axios';
 import { useRouter } from "next/router";
+import { showNotification } from "utils/helper";
 
 export default function UpdateStore({ store }) {
     const router = useRouter();
@@ -41,10 +42,7 @@ export default function UpdateStore({ store }) {
             await axios
                 .post(`${process.env.NEXT_PUBLIC_baseURL}/stores/upload-image/${store.slug}`, fd, config)
                 .then(({ data }) => toast.success(data.message))
-                .catch((err) => {
-                    let message = err.response ? err.response.data.message : "Only image files are allowed!";
-                    toast.error(message)
-                });
+                .catch(err => showNotification(err));
         }
     }
 
@@ -159,6 +157,7 @@ export default function UpdateStore({ store }) {
 export async function getServerSideProps(context) {
     const { slug } = context.query;
     const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/stores/${slug}`);
+    console.log(data.store);
     return {
         props: {
             store: data.store

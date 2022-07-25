@@ -26,9 +26,10 @@ export default function Stores({ stores }) {
             renderCell: (params) => {
                 return (
                     <div className={styles.productListItem}>
-                        {(params.row.banner) ? (
-                            <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/${params.row.banner}`} />) :
-                            (<img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_uploadURL}/default.png`} />)}
+                        <img className={styles.productListImg}
+                            src={params.row.banner ?
+                                `${process.env.NEXT_PUBLIC_thumbURL}/${params.row.banner}` :
+                                `${process.env.NEXT_PUBLIC_thumbURL}/store.png`} />
                         {params.row.title}
                     </div>
                 );

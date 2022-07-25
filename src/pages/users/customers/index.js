@@ -1,4 +1,4 @@
-import styles from 'styles/UsersAdmin.module.css';
+import styles from 'styles/UsersCustomers.module.css';
 import axios from 'axios';
 import { DeleteOutline, Phone } from "@material-ui/icons";
 import { Link, Button } from "@material-ui/core";
@@ -8,7 +8,7 @@ import MuiGrid from 'components/MuiGrid/MuiGrid';
 const { formatDate } = require("utils/utils");
 import { useState } from 'react';
 
-export default function AdminUsers({ users }) {
+export default function Customers({ users }) {
     const [data, setData] = useState(users);
 
     const handleDelete = async (id) => {
@@ -20,19 +20,21 @@ export default function AdminUsers({ users }) {
     const columns = [
         { field: "id", headerName: "ID", width: 330, hide: true },
         {
-            field: "first_name", headerName: "User", width: 240,
+            field: "first_name", headerName: "Customer", width: 230,
             renderCell: (params) => {
+                console.log(params.row.image);
                 return (
                     <div className={styles.productListItem}>
-                        {params.row.image ? <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/${params.row.image}`} />
-                            : <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_uploadURL}/avatar.png`} />
-                        }
+                        <img className={styles.productListImg}
+                            src={params.row.image ?
+                                `${process.env.NEXT_PUBLIC_thumbURL}/${params.row.image}` :
+                                `${process.env.NEXT_PUBLIC_thumbURL}/avatar.png`} />
                         {`${params.row.first_name} ${params.row.last_name}`}
                     </div>
                 );
             },
         },
-        { field: "email", headerName: "email", width: 200 },
+        { field: "email", headerName: "email", width: 220 },
         {
             field: "phone_no", headerName: "Phone #", width: 180,
             renderCell: (params) => {
@@ -60,12 +62,22 @@ export default function AdminUsers({ users }) {
                     </>
                 );
             }
-
-
+        },
+        {
+            field: "email_subscription", headerName: "email Subscription", width: 190,
+            renderCell: (params) => {
+                return (
+                    <div className={styles.subscriptionDiv}>
+                        {params.row.email_subscription ?
+                            <button className={styles.subscribedButton}>Subscribed</button>
+                            : <button className={styles.noSubscribedButton}>No</button>}
+                    </div>
+                );
+            },
         },
 
         {
-            field: "createdAt", headerName: "Created on", width: 150, type: "dateTime",
+            field: "createdAt", headerName: "Created on", width: 150, type: 'dateTime',
             valueFormatter: (params) => formatDate(params.value),
         },
         {
@@ -74,15 +86,10 @@ export default function AdminUsers({ users }) {
             width: 100,
             renderCell: (params) => {
                 return (
-                    <>
-                        <Link href={"/users/admin/update/" + params.row.id}>
-                            <button className={styles.productListEdit}>Edit</button>
-                        </Link>
-                        <DeleteOutline
-                            className={styles.productListDelete}
-                            onClick={() => handleDelete(params.row.id)}
-                        />
-                    </>
+                    <DeleteOutline
+                        className={styles.productListDelete}
+                        onClick={() => handleDelete(params.row.id)}
+                    />
                 );
             },
         },
@@ -91,9 +98,9 @@ export default function AdminUsers({ users }) {
     return (
         <div className={styles.productList}>
             <div className={styles.main}>
-                <h2 className={styles.productTitle}>Admin Users</h2>
-                <Link href="/users/admin/create">
-                    <Button variant="contained" color="primary" component="label">Create New</Button>
+                <h2 className={styles.productTitle}>Customers</h2>
+                <Link href="/users/store/create">
+                    {/* <Button variant="contained" color="primary" component="label">Create New</Button> */}
                 </Link>
             </div>
             <MuiGrid data={data} columns={columns} />
@@ -102,8 +109,8 @@ export default function AdminUsers({ users }) {
 }
 
 export const getServerSideProps = async () => {
-    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/users/`);
-    const users = data.users.filter((item) => item.role === "admin");
+    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/users`);
+    const users = data.users.filter((item) => item.role === "customer");
     return {
         props: {
             users

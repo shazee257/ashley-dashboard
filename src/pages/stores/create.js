@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Grid, Paper, TextField, Button, Typography, Link } from '@material-ui/core'
 import axios from 'axios';
+import { showNotification } from "utils/helper";
 
 export default function NewStore() {
     const storeObj = {
@@ -66,9 +67,7 @@ export default function NewStore() {
                 .then(({ data }) => {
                     data.success && toast.success(data.message);
                     clearForm();
-                }).catch(err => {
-                    toast.error(err);
-                })
+                }).catch(err => showNotification(err));
         } catch (error) {
             let message = error.response ? error.response.data.message : "Only image files are allowed!";
             toast.error(message);

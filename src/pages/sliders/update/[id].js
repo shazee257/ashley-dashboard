@@ -1,24 +1,26 @@
 import styles from "styles/BrandUpdate.module.css";
 import { useEffect, useState, useRef } from "react";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Grid, Paper, TextField, Button, Typography, Link, Select, InputLabel, MenuItem, FormControl } from '@material-ui/core'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { showNotification } from "utils/helper";
 
-export default function UpdateBrand({ brand }) {
+export default function UpdateBrand({ slider }) {
     const router = useRouter();
     const titleRef = useRef(null);
+    const subTitleRef = useRef(null);
     const descriptionRef = useRef(null);
     const [image, setImage] = useState("");
     const [img_address, setImg_address] = useState("");
     const [filename, setFilename] = useState("Choose Image");
 
     useEffect(() => {
-        titleRef.current.value = brand.title;
-        descriptionRef.current.value = brand.description;
-        setImage(brand.image);
+        titleRef.current.value = slider.title;
+        subTitleRef.current.value = slider.sub_title;
+        descriptionRef.current.value = slider.description;
+        setImage(slider.image);
     }, []);
 
     const fileSelectedHandler = async (e) => {
@@ -38,7 +40,7 @@ export default function UpdateBrand({ brand }) {
             const config = { headers: { 'Content-Type': 'multipart/form-data' } }
 
             await axios
-                .post(`${process.env.NEXT_PUBLIC_baseURL}/brands/upload-image/${brand.slug}`, fd, config)
+                .post(`${process.env.NEXT_PUBLIC_baseURL}/sliders/${slider._id}/upload`, fd, config)
                 .then(({ data }) => toast.success(data.message))
                 .catch((err) => {
                     let message = err.response ? err.response.data.message : "Only image files are allowed!";
@@ -50,21 +52,22 @@ export default function UpdateBrand({ brand }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const updateBrand = {
+        const updateSlider = {
             title: titleRef.current.value,
+            sub_title: subTitleRef.current.value,
             description: descriptionRef.current.value,
         };
 
         try {
             await axios
-                .put(`${process.env.NEXT_PUBLIC_baseURL}/brands/${brand.slug}`, updateBrand)
+                .put(`${process.env.NEXT_PUBLIC_baseURL}/sliders/${slider._id}`, updateSlider)
                 .then(({ data }) => {
                     console.log(data);
                     data.success && toast.success(data.message);
-                    router.push('/brands');
+                    router.push('/sliders');
                 }).catch(err => showNotification(err));
         } catch (error) {
-            toast.error("brand is not updated, please try again", error);
+            toast.error("Slider Content is not updated, please try again", error);
         }
     };
 
@@ -73,24 +76,29 @@ export default function UpdateBrand({ brand }) {
             <Grid>
                 <Paper elevation={0} style={{ width: '400px', padding: '20px' }} >
                     <Grid align='left'>
-                        <h2>Update Brand</h2>
+                        <h2>Update Slider Content</h2>
                     </Grid>
                     <br />
                     <TextField
                         className={styles.addProductItem}
-                        label='Brand Title'
-                        placeholder='Enter Brand Title'
+                        label='Title'
+                        placeholder='Enter Title'
                         fullWidth
-                        inputRef={titleRef}
-                    />
+                        inputRef={titleRef} />
+                    <br />
+                    <TextField
+                        className={styles.addProductItem}
+                        label='Sub-Title'
+                        placeholder='Enter Sub-Title'
+                        fullWidth
+                        inputRef={subTitleRef} />
                     <br />
                     <TextField
                         className={styles.addProductItem}
                         label='Description'
-                        placeholder="Description"
+                        placeholder="Slider Description"
                         fullWidth multiline maxRows={5}
-                        inputRef={descriptionRef}
-                    />
+                        inputRef={descriptionRef} />
                     <br /><br />
 
                     <div className={styles.addProductItem}>
@@ -100,10 +108,10 @@ export default function UpdateBrand({ brand }) {
                         <div><small>Only jpg, png, gif, svg images are allowed</small></div>
                     </div>
                     <br />
-                    <Button onClick={handleSubmit} type='submit' color='primary' variant="contained" className={styles.btnstyle} fullWidth>Update Brand</Button>
+                    <Button onClick={handleSubmit} type='submit' color='primary' variant="contained" className={styles.btnstyle} fullWidth>Update Slider Content</Button>
                     <br /><br />
                     <Typography >
-                        <Link href="/brands">Back to Brands</Link>
+                        <Link href="/sliders">Back to Sliders</Link>
                     </Typography>
                 </Paper>
             </Grid>
@@ -119,11 +127,11 @@ export default function UpdateBrand({ brand }) {
 }
 
 export async function getServerSideProps(context) {
-    const { slug } = context.query;
-    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/brands/${slug}`);
+    const { id } = context.query;
+    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/sliders/${id}`);
     return {
         props: {
-            brand: data.brand
+            slider: data.slider
         }
     };
 }

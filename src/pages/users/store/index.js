@@ -1,4 +1,4 @@
-import styles from 'styles/UsersAdmin.module.css';
+import styles from 'styles/UsersStore.module.css';
 import axios from 'axios';
 import { DeleteOutline, Phone } from "@material-ui/icons";
 import { Link, Button } from "@material-ui/core";
@@ -20,7 +20,7 @@ export default function AdminUsers({ users }) {
     const columns = [
         { field: "id", headerName: "ID", width: 330, hide: true },
         {
-            field: "first_name", headerName: "User", width: 240,
+            field: "first_name", headerName: "Store User", width: 200,
             renderCell: (params) => {
                 return (
                     <div className={styles.productListItem}>
@@ -32,9 +32,24 @@ export default function AdminUsers({ users }) {
                 );
             },
         },
-        { field: "email", headerName: "email", width: 200 },
+        { field: "email", headerName: "email", width: 190 },
         {
-            field: "phone_no", headerName: "Phone #", width: 180,
+            field: "store_id.title", headerName: "Store / Franchise", width: 210,
+            renderCell: (params) => {
+                console.log(params.row.store_id.banner);
+                return (
+                    <div className={styles.productListItem}>
+                        <img className={styles.productListImg}
+                            src={params.row.store_id.banner ?
+                                `${process.env.NEXT_PUBLIC_thumbURL}/${params.row.store_id.banner}` :
+                                `${process.env.NEXT_PUBLIC_thumbURL}/store.png`} />
+                        {`${params.row.store_id.title}`}
+                    </div>
+                );
+            },
+        },
+        {
+            field: "phone_no", headerName: "Phone #", width: 150,
             renderCell: (params) => {
                 return (
                     <>
@@ -61,9 +76,7 @@ export default function AdminUsers({ users }) {
                 );
             }
 
-
         },
-
         {
             field: "createdAt", headerName: "Created on", width: 150, type: "dateTime",
             valueFormatter: (params) => formatDate(params.value),
@@ -75,7 +88,7 @@ export default function AdminUsers({ users }) {
             renderCell: (params) => {
                 return (
                     <>
-                        <Link href={"/users/admin/update/" + params.row.id}>
+                        <Link href={"/users/store/update/" + params.row.id}>
                             <button className={styles.productListEdit}>Edit</button>
                         </Link>
                         <DeleteOutline
@@ -91,8 +104,8 @@ export default function AdminUsers({ users }) {
     return (
         <div className={styles.productList}>
             <div className={styles.main}>
-                <h2 className={styles.productTitle}>Admin Users</h2>
-                <Link href="/users/admin/create">
+                <h2 className={styles.productTitle}>Store / Franchise Users</h2>
+                <Link href="/users/store/create">
                     <Button variant="contained" color="primary" component="label">Create New</Button>
                 </Link>
             </div>
@@ -103,7 +116,7 @@ export default function AdminUsers({ users }) {
 
 export const getServerSideProps = async () => {
     const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/users/`);
-    const users = data.users.filter((item) => item.role === "admin");
+    const users = data.users.filter((item) => item.role === "store");
     return {
         props: {
             users

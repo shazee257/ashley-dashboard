@@ -1,6 +1,5 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import axios from "axios";
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Button, Grid, Paper, Avatar, TextField, Typography, Link } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -15,6 +14,15 @@ const Login = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
 
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            router.push("/");
+        } else {
+            router.push("/login");
+        }
+    }, [])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -26,6 +34,13 @@ const Login = () => {
         await axios.post(`${process.env.NEXT_PUBLIC_baseURL}/users/login`, user)
             .then(({ data }) => {
                 if (data.success) {
+                    localStorage.setItem("user", JSON.stringify({
+                        first_name: data.user.first_name,
+                        last_name: data.user.last_name,
+                        email: data.user.email,
+                        image: data.user.image,
+                        role: data.user.role,
+                    }));
                     localStorage.setItem("token", data.session.token);
                     router.push("/");
                 }
@@ -48,12 +63,14 @@ const Login = () => {
                         label='Email'
                         placeholder='Enter Email'
                         fullWidth
+                        value="admin@gmail.com"
                         inputRef={emailRef}
                     />
                     <TextField
                         label='Password'
                         placeholder='Enter password'
                         type='password'
+                        value="121212"
                         fullWidth
                         inputRef={passwordRef}
                     />

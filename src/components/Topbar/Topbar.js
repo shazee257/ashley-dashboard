@@ -1,6 +1,6 @@
 import styles from "./Topbar.module.css"
 import React, { useState, useEffect } from "react";
-import { NotificationsNone, Language, Settings } from "@material-ui/icons";
+// import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import { Typography, Button, Menu, MenuItem } from "@material-ui/core";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -16,10 +16,11 @@ export default function Topbar() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      verifyToken(token);
-    } else {
+    if (!token) {
       router.push("/login");
+    } else {
+      verifyToken(token);
+      router.push("/");
     }
   }, [])
 

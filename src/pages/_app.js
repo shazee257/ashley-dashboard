@@ -4,12 +4,14 @@ import Layout from 'components/Layout/Layout';
 import LoadingPanel from "components/Loader/Loader";
 import Router from "next/router";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log(status);
     const start = () => {
       console.log("start");
       setLoading(true);
@@ -46,3 +48,5 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp
+
+

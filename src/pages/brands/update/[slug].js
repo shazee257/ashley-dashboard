@@ -109,7 +109,7 @@ export default function UpdateBrand({ brand }) {
             </Grid>
             <div className={styles.productImage}>
                 <img className={styles.imgObject}
-                    src={(image && !img_address) ? `${process.env.NEXT_PUBLIC_uploadURL}/${image}` : (img_address)}
+                    src={(image && !img_address) ? `${process.env.NEXT_PUBLIC_uploadURL}/brands/${image}` : (img_address)}
                 />
             </div>
             <br />

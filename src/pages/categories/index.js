@@ -13,7 +13,6 @@ export default function Categories({ categories }) {
 
     useEffect(() => {
         setData(categories);
-        console.log(categories);
     }, []);
 
     const handleDelete = async (slug) => {
@@ -29,7 +28,7 @@ export default function Categories({ categories }) {
             renderCell: (params) => {
                 return (
                     <div className={styles.productListItem}>
-                        <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/${params.row.image}`} />
+                        <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/categories/${params.row.image}`} />
                         {params.row.title}
                     </div>
                 );
@@ -42,7 +41,7 @@ export default function Categories({ categories }) {
                 return (
                     <div className={styles.productListItem}>
                         {params.row.parent_image ?
-                            (<img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/${params.row.parent_image}`} />) : "None"}
+                            (<img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/categories/${params.row.parent_image}`} />) : "None"}
                         {params.row.parent_title}
                     </div>
                 );
@@ -51,7 +50,7 @@ export default function Categories({ categories }) {
 
         },
         {
-            field: "createdAt", headerName: "Created on", width: 150,
+            field: "createdAt", headerName: "Created on", width: 150, type: "dateTime",
             valueFormatter: (params) => formatDate(params.value),
         },
         {

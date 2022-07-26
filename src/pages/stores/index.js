@@ -28,8 +28,8 @@ export default function Stores({ stores }) {
                     <div className={styles.productListItem}>
                         <img className={styles.productListImg}
                             src={params.row.banner ?
-                                `${process.env.NEXT_PUBLIC_thumbURL}/${params.row.banner}` :
-                                `${process.env.NEXT_PUBLIC_thumbURL}/store.png`} />
+                                `${process.env.NEXT_PUBLIC_thumbURL}/stores/${params.row.banner}` :
+                                `${process.env.NEXT_PUBLIC_thumbURL}/stores/store.png`} />
                         {params.row.title}
                     </div>
                 );
@@ -42,7 +42,7 @@ export default function Stores({ stores }) {
         { field: "state", headerName: "State", width: 120 },
         { field: "zip", headerName: "Zip Code", width: 130 },
         {
-            field: "createdAt", headerName: "Created on", width: 150,
+            field: "createdAt", headerName: "Created on", width: 150, type: 'dateTime',
             valueFormatter: (params) => formatDate(params.value),
         },
         {
@@ -78,7 +78,7 @@ export default function Stores({ stores }) {
     );
 }
 
-export const getServerSideProps = async () => {
+export async function getServerSideProps() {
     const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/stores`);
     return {
         props: {

@@ -108,7 +108,7 @@ export default function UpdateCategory({ category, categories }) {
             <div className="imageWithButton">
                 <div className={styles.productImage}>
                     <img className={styles.imgObject}
-                        src={(image && !img_address) ? `${process.env.NEXT_PUBLIC_uploadURL}/${category.image}` : (img_address)}
+                        src={(image && !img_address) ? `${process.env.NEXT_PUBLIC_uploadURL}/categories/${category.image}` : (img_address)}
                     />
                 </div>
                 <div className={styles.imageButtonContainer}>

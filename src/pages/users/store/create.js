@@ -130,7 +130,7 @@ export default function NewUser() {
             <div className="imageWithButton">
                 <div className={styles.productImage}>
                     {(selectedFile) ? (<img src={image} className={styles.imgObject}></img>)
-                        : (<img src={`${process.env.NEXT_PUBLIC_uploadURL}/avatar.png`} className={styles.imgObject}></img>)}
+                        : (<img src={`${process.env.NEXT_PUBLIC_uploadURL}/users/avatar.png`} className={styles.imgObject}></img>)}
 
                 </div>
                 <div className={styles.imageButtonContainer}>

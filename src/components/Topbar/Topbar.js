@@ -20,7 +20,7 @@ export default function Topbar() {
       router.push("/login");
     } else {
       verifyToken(token);
-      router.push("/");
+      //   router.push("/");
     }
   }, [])
 
@@ -73,8 +73,8 @@ export default function Topbar() {
             </div>
 
             <div className={styles.topAvatarContainer}>
-              {user.image ? <img src={`${process.env.NEXT_PUBLIC_thumbURL}/${user.image}`} className={styles.topAvatar} />
-                : <img src={`${process.env.NEXT_PUBLIC_uploadURL}/avatar.png`} className={styles.topAvatar} />
+              {user.image ? <img src={`${process.env.NEXT_PUBLIC_thumbURL}/users/${user.image}`} className={styles.topAvatar} />
+                : <img src={`${process.env.NEXT_PUBLIC_uploadURL}/users/avatar.png`} className={styles.topAvatar} />
               }
             </div>
           </Button>

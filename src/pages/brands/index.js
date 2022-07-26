@@ -26,7 +26,7 @@ export default function Brands({ brands }) {
             renderCell: (params) => {
                 return (
                     <div className={styles.productListItem}>
-                        <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/${params.row.image}`} />
+                        <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/brands/${params.row.image}`} />
                         {params.row.title}
                     </div>
                 );

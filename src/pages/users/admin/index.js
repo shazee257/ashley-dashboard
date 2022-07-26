@@ -24,8 +24,8 @@ export default function AdminUsers({ users }) {
             renderCell: (params) => {
                 return (
                     <div className={styles.productListItem}>
-                        {params.row.image ? <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/${params.row.image}`} />
-                            : <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_uploadURL}/avatar.png`} />
+                        {params.row.image ? <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/users/${params.row.image}`} />
+                            : <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_uploadURL}/users/avatar.png`} />
                         }
                         {`${params.row.first_name} ${params.row.last_name}`}
                     </div>

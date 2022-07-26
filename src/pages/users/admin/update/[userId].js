@@ -146,8 +146,14 @@ export default function UpdateBrand(props) {
             </Grid>
             <div className="imageWithButton">
                 <div className={styles.productImage}>
-                    <img className={styles.imgObject}
-                        src={(image && !img_address) ? `${process.env.NEXT_PUBLIC_uploadURL}/${props.user.image}` : (img_address)} />
+                    {(!image && !img_address) ?
+                        (<img className={styles.imgObject}
+                            src={`${process.env.NEXT_PUBLIC_uploadURL}/users/avatar.png`}
+                        />)
+                        : (<img className={styles.imgObject}
+                            src={`${process.env.NEXT_PUBLIC_uploadURL}/users/${props.user.image}`}
+                        />)
+                    }
                 </div>
                 <div className={styles.imageButtonContainer}>
                     <div><small>Only jpg, png, gif, svg, webp images are allowed</small></div>

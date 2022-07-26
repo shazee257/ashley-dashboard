@@ -136,11 +136,18 @@ export default function UpdateStore({ store }) {
                     </Typography>
                 </Paper>
             </Grid>
-            <div className="imageWithButton">
+            <div className={styles.imageWithButton}>
                 <div className={styles.productImage}>
-                    <img className={styles.imgObject}
-                        src={(image && !img_address) ? `${process.env.NEXT_PUBLIC_uploadURL}/${store.banner}` : (img_address)}
-                    />
+                    {(!image && !img_address) ?
+                        (<img className={styles.imgObject}
+                            src={`${process.env.NEXT_PUBLIC_uploadURL}/stores/store.png`}
+                        />)
+                        : (<img className={styles.imgObject}
+                            src={(image != '' && !img_address) ? `${process.env.NEXT_PUBLIC_uploadURL}/stores/${store.banner}` : (img_address)}
+                        />)
+                    }
+
+
                 </div>
                 <div className={styles.imageButtonContainer}>
                     <div><small>Only jpg, png, gif, svg, webp images are allowed</small></div>
@@ -157,7 +164,6 @@ export default function UpdateStore({ store }) {
 export async function getServerSideProps(context) {
     const { slug } = context.query;
     const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/stores/${slug}`);
-    console.log(data.store);
     return {
         props: {
             store: data.store

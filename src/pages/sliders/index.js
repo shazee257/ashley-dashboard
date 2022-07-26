@@ -20,7 +20,7 @@ export default function Customers({ sliders }) {
 
     // open image in new tab
     const imageHandler = (image) => {
-        window.open(`${process.env.NEXT_PUBLIC_uploadURL}/${image}`, '_blank');
+        window.open(`${process.env.NEXT_PUBLIC_uploadURL}/slider/${image}`, '_blank');
     }
 
     const columns = [
@@ -32,7 +32,7 @@ export default function Customers({ sliders }) {
                     <div className={styles.productListItem}>
                         <img
                             className={styles.productListImg}
-                            src={`${process.env.NEXT_PUBLIC_thumbURL}/${params.row.image}`}
+                            src={`${process.env.NEXT_PUBLIC_thumbURL}/slider/${params.row.image}`}
                             onClick={() => imageHandler(params.row.image)}
                         />
                         <Link href={`/sliders/update/${params.row.id}`}>{params.row.title}</Link>

@@ -4,7 +4,6 @@ import Layout from 'components/Layout/Layout';
 import LoadingPanel from "components/Loader/Loader";
 import Router from "next/router";
 import { useRouter } from "next/router";
-import axios from "axios";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();

@@ -74,7 +74,7 @@ const Login = () => {
                         fullWidth
                         inputRef={passwordRef}
                     />
-                    <FormControlLabel control={<Checkbox name="checkedB" color="primary" />} label="Remember me" />
+                    {/* <FormControlLabel control={<Checkbox name="checkedB" color="primary" />} label="Remember me" /> */}
                     <Button onClick={handleSubmit} color='primary' variant="contained" style={btnstyle} fullWidth >Sign in</Button>
 
                     <Typography >

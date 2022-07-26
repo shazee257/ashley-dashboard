@@ -6,10 +6,16 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MuiGrid from 'components/MuiGrid/MuiGrid';
 const { formatDate } = require("utils/utils");
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Customers({ users }) {
-    const [data, setData] = useState(users);
+    const [data, setData] = useState([]);
+
+
+    useEffect(() => {
+        setData(users);
+    }, [users]);
+
 
     const handleDelete = async (id) => {
         await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/users/${id}`)
@@ -27,8 +33,8 @@ export default function Customers({ users }) {
                     <div className={styles.productListItem}>
                         <img className={styles.productListImg}
                             src={params.row.image ?
-                                `${process.env.NEXT_PUBLIC_thumbURL}/${params.row.image}` :
-                                `${process.env.NEXT_PUBLIC_thumbURL}/avatar.png`} />
+                                `${process.env.NEXT_PUBLIC_thumbURL}/users/${params.row.image}` :
+                                `${process.env.NEXT_PUBLIC_thumbURL}/users/avatar.png`} />
                         {`${params.row.first_name} ${params.row.last_name}`}
                     </div>
                 );

@@ -104,10 +104,12 @@ export default function NewUser() {
                         <br />
                         <TextField className={styles.addProductItem}
                             label='Password' placeholder='Enter Password'
+                            type='password'
                             inputRef={passwordRef} />
                         <br />
                         <TextField className={styles.addProductItem}
                             label='Confirm Password' placeholder='Enter Password again'
+                            type='password'
                             inputRef={confirmPasswordRef} />
                         <br />
                         <br /><br />

@@ -14,14 +14,14 @@ const Login = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            router.push("/");
-        } else {
-            router.push("/login");
-        }
-    }, [])
+    // useEffect(() => {
+    //     const token = localStorage.getItem("token");
+    //     if (token) {
+    //         router.push("/");
+    //     } else {
+    //         router.push("/login");
+    //     }
+    // }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault();

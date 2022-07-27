@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Grid, Paper, TextField, Button, Typography } from '@material-ui/core'
 import axios from 'axios';
 import { showNotification } from "utils/helper";
-import { Link } from "next/link";
+import Link from "next/link";
 
 export default function NewStore() {
     const storeObj = {

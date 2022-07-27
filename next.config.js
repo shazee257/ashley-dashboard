@@ -17,7 +17,7 @@
 
 module.exports = {
     images: {
-        domains: ["localhost", "https://ashley-api.herokuapp.com"]
+        domains: ["localhost", "ashley-api.herokuapp.com"]
     },
 }
 

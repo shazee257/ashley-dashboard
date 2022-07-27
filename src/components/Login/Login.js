@@ -33,7 +33,7 @@ const Login = () => {
                         role: data.user.role,
                     }));
                     localStorage.setItem("token", data.session.token);
-                    router.push("/");
+                    router.push("/categories");
                 }
             }).catch(err => showNotification(err));
     };

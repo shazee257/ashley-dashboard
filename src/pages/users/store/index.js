@@ -97,7 +97,6 @@ export default function AdminUsers({ users }) {
             <div className={styles.main}>
                 <h2 className={styles.productTitle}>Store / Franchise Users</h2>
                 <Link href="/users/store/create">
-                    {/* Create New */}
                     <Button
                         variant="contained"
                         color="primary"

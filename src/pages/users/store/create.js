@@ -174,7 +174,7 @@ export default function NewStoreUser({ stores }) {
     );
 }
 
-export async function getStaticProps() {
+export const getServerSideProps = async () => {
     const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/stores`);
     return {
         props: {

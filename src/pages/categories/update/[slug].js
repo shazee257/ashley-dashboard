@@ -2,10 +2,12 @@ import styles from "styles/CategoryUpdate.module.css";
 import { useEffect, useState, useRef } from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Grid, Paper, TextField, Button, Typography, Link, Select, InputLabel, MenuItem, FormControl } from '@material-ui/core'
+import { Grid, Paper, TextField, Button, Typography, Select, InputLabel, MenuItem, FormControl } from '@material-ui/core'
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { showNotification } from "utils/helper";
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function UpdateCategory({ category, categories }) {
     const router = useRouter();
@@ -107,8 +109,8 @@ export default function UpdateCategory({ category, categories }) {
             </Grid>
             <div className="imageWithButton">
                 <div className={styles.productImage}>
-                    <img className={styles.imgObject}
-                        src={(image && !img_address) ? `${process.env.NEXT_PUBLIC_uploadURL}/categories/${category.image}` : (img_address)}
+                    <Image height={400} width={400}
+                        src={img_address ? img_address : `${process.env.NEXT_PUBLIC_uploadURL}/categories/${category.image}`}
                     />
                 </div>
                 <div className={styles.imageButtonContainer}>

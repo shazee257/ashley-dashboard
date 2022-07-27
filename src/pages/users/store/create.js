@@ -1,18 +1,25 @@
-import styles from "styles/UserAdminCreate.module.css";
+import styles from "styles/UserStoreCreate.module.css";
 import { useState, useRef } from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Grid, Paper, TextField, Button, Typography, Link } from '@material-ui/core'
+import {
+    Grid, Paper, TextField, Button,
+    Typography, Select, InputLabel,
+    MenuItem
+} from '@material-ui/core'
 import axios from 'axios';
 import { showNotification } from "utils/helper";
+import Link from "next/link";
+import Image from "next/image";
 
-export default function NewUser() {
+export default function NewStoreUser({ stores }) {
     const firstNameRef = useRef(null);
     const lastNameRef = useRef(null);
     const emailRef = useRef(null);
     const phoneNoRef = useRef(null);
     const passwordRef = useRef(null);
     const confirmPasswordRef = useRef(null);
+    const storeIdRef = useRef(null);
 
     const [image, setImage] = useState("");
     const [filename, setFilename] = useState("Choose Image");
@@ -36,6 +43,7 @@ export default function NewUser() {
         phoneNoRef.current.value = "";
         passwordRef.current.value = "";
         confirmPasswordRef.current.value = "";
+        storeIdRef.current.value = "";
         setImage("");
         setFilename("Choose Image");
         setSelectedFile("");
@@ -49,6 +57,7 @@ export default function NewUser() {
         fd.append("first_name", firstNameRef.current.value);
         fd.append("last_name", lastNameRef.current.value);
         fd.append("email", emailRef.current.value);
+        fd.append("store_id", storeIdRef.current.value);
         fd.append("role", "store");
         fd.append("phone_no", phoneNoRef.current.value);
         fd.append("password", passwordRef.current.value);
@@ -96,7 +105,28 @@ export default function NewUser() {
                         <TextField className={styles.addProductItem}
                             label='Email' placeholder='Enter Email'
                             inputRef={emailRef} />
-                        <br />
+                        <br /><br />
+
+                        <InputLabel>Select Store</InputLabel>
+                        <Select fullWidth displayEmpty
+                            label="Store"
+                            inputRef={storeIdRef}
+                        >
+                            {stores.map((store) => (
+                                <MenuItem value={store._id} key={store._id}>
+                                    <div className={styles.productListItem}>
+                                        <div className={styles.productListItem}>
+                                            <Image height={32} width={32}
+                                                className={styles.productListImg}
+                                                src={`${process.env.NEXT_PUBLIC_thumbURL}/stores/${store.banner}`} />
+                                        </div>
+                                        {store.title}
+                                    </div>
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <br /><br />
+
                         <TextField className={styles.addProductItem}
                             label='Phone #'
                             placeholder='Enter Phone #'
@@ -118,7 +148,7 @@ export default function NewUser() {
                             variant="contained"
                             style={{ margin: '8px 0' }}
                             fullWidth>
-                            Create Store User
+                            Create
                         </Button>
                     </form>
                     <br />
@@ -143,3 +173,13 @@ export default function NewUser() {
         </div>
     );
 }
+
+export async function getStaticProps() {
+    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/stores`);
+    return {
+        props: {
+            stores: data.stores
+        }
+    }
+}
+

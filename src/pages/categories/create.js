@@ -4,15 +4,14 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
     Grid, Paper, TextField, Button,
-    Typography, Link, Select, InputLabel,
+    Typography, Select, InputLabel,
     MenuItem, Checkbox,
     ListItemIcon, ListItemText,
-
 } from '@material-ui/core'
 import axios from 'axios';
 import { showNotification } from "utils/helper";
 import { MenuProps, useStyles, options } from "components/FilterOptions/FilterOptions";
-
+import Link from "next/link";
 
 export default function NewCategory({ categories }) {
     const titleRef = useRef(null);

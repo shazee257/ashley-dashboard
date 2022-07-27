@@ -2,15 +2,17 @@ import styles from "styles/UserAdminUpdate.module.css";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Grid, Paper, TextField, Button, Typography, Link } from '@material-ui/core'
+import { Grid, Paper, TextField, Button, Typography } from '@material-ui/core'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { showNotification } from "utils/helper";
+import Image from 'next/image';
+import Link from "next/link";
 
 export default function UpdateBrand(props) {
     const router = useRouter();
 
-    const userObj = {
+    const initialProps = {
         first_name: props.user.first_name,
         last_name: props.user.last_name,
         email: props.user.email,
@@ -19,16 +21,11 @@ export default function UpdateBrand(props) {
         confirm_password: "",
     }
 
-    const [user, setUser] = useState(userObj);
+    const [user, setUser] = useState(initialProps);
 
     const [image, setImage] = useState(props.user.image || "");
     const [filename, setFilename] = useState("Choose Image");
     const [img_address, setImg_address] = useState("");
-    // const [selectedFile, setSelectedFile] = useState("");
-
-    useEffect(() => {
-        console.log('user', props.user);
-    }, []);
 
     const fileSelectedHandler = async (e) => {
         if (e.target.value) {
@@ -56,32 +53,30 @@ export default function UpdateBrand(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const fd = new FormData();
-        fd.append("image", selectedFile);
-        fd.append("first_name", firstNameRef.current.value);
-        fd.append("last_name", lastNameRef.current.value);
-        fd.append("email", emailRef.current.value);
-        fd.append("role", "admin");
-        fd.append("phone_no", phoneNoRef.current.value);
-        fd.append("password", passwordRef.current.value);
-        fd.append("confirm_password", confirmPasswordRef.current.value);
+        const userObj = {
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            phone_no: user.phone_no,
+            password: user.password,
+            confirm_password: user.confirm_password,
+        }
 
         const config = {
-            headers: { 'Content-Type': 'multipart/form-data' }
+            headers: { 'Content-Type': 'application/json' }
         }
 
         try {
             await axios
-                .post(`${process.env.NEXT_PUBLIC_baseURL}/${user._id}`, fd, config)
+                .put(`${process.env.NEXT_PUBLIC_baseURL}/users/${props.user._id}`, userObj, config)
                 .then(({ data }) => {
                     console.log(data);
                     data.success && toast.success(data.message);
-                    router.push("/admin/users");
+                    router.push("/users/admin");
                 }).catch(err => showNotification(err));
-        } catch (error) {
-            let message = error.response ? error.response.data.message : "Only image files are allowed!";
-            toast.error(message);
-        }
+        } catch (err) {
+            showNotification(err)
+        };
     };
 
 
@@ -93,7 +88,7 @@ export default function UpdateBrand(props) {
                         <h2>Update Admin User</h2>
                     </Grid>
                     <br />
-                    <form encType='multipart/form-data'>
+                    <form>
                         <TextField
                             className={styles.addProductItem}
                             label='First Name' placeholder='Enter First Name'
@@ -119,11 +114,13 @@ export default function UpdateBrand(props) {
                         <br />
                         <TextField className={styles.addProductItem}
                             label='Password' placeholder='Enter Password'
+                            type="password"
                             value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })}
                         />
                         <br />
                         <TextField className={styles.addProductItem}
                             label='Confirm Password' placeholder='Enter Password again'
+                            type="password"
                             value={user.confirm_password} onChange={(e) => setUser({ ...user, confirm_password: e.target.value })}
                         />
                         <br />
@@ -135,7 +132,7 @@ export default function UpdateBrand(props) {
                             variant="contained"
                             style={{ margin: '8px 0' }}
                             fullWidth>
-                            Update Admin User
+                            Update
                         </Button>
                     </form>
                     <br /><br />
@@ -146,14 +143,9 @@ export default function UpdateBrand(props) {
             </Grid>
             <div className="imageWithButton">
                 <div className={styles.productImage}>
-                    {(!image && !img_address) ?
-                        (<img className={styles.imgObject}
-                            src={`${process.env.NEXT_PUBLIC_uploadURL}/users/avatar.png`}
-                        />)
-                        : (<img className={styles.imgObject}
-                            src={`${process.env.NEXT_PUBLIC_uploadURL}/users/${props.user.image}`}
-                        />)
-                    }
+                    <Image height={400} width={400}
+                        className={styles.imgObject}
+                        src={(img_address ? img_address : `${process.env.NEXT_PUBLIC_uploadURL}/users/${props.user.image}`)} />
                 </div>
                 <div className={styles.imageButtonContainer}>
                     <div><small>Only jpg, png, gif, svg, webp images are allowed</small></div>

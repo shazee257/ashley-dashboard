@@ -2,8 +2,8 @@ import styles from "./Topbar.module.css"
 import React, { useState, useEffect } from "react";
 // import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import { Typography, Button, Menu, MenuItem } from "@material-ui/core";
-import axios from "axios";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 export default function Topbar() {
   const [user, setUser] = useState("");
@@ -11,32 +11,14 @@ export default function Topbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     router.push("/login");
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.push("/login");
-    } else {
-      verifyToken(token);
-      //   router.push("/");
-    }
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) setUser(userData);
   }, [])
-
-  const verifyToken = (userToken) => {
-    axios.get(`${process.env.NEXT_PUBLIC_baseURL}/users/verify-token`, {
-      headers: { "Authorization": userToken }
-    }).then(({ data }) => {
-      if (data.success) {
-        setUser(data.user);
-      } else {
-        router.push("/login");
-      }
-    }).catch(err => {
-      console.log(err);
-    })
-  }
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -69,12 +51,11 @@ export default function Topbar() {
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}>
             <div className={styles.userRole}>
-              {`${user.first_name} ${user.last_name}`}
+              {`${user?.first_name} ${user?.last_name}`}
             </div>
-
             <div className={styles.topAvatarContainer}>
-              {user.image ? <img src={`${process.env.NEXT_PUBLIC_thumbURL}/users/${user.image}`} className={styles.topAvatar} />
-                : <img src={`${process.env.NEXT_PUBLIC_uploadURL}/users/avatar.png`} className={styles.topAvatar} />
+              {user?.image ? <Image height={50} width={50} src={`${process.env.NEXT_PUBLIC_thumbURL}/users/${user.image}`} className={styles.topAvatar} />
+                : <Image height={50} width={50} src={`${process.env.NEXT_PUBLIC_thumbURL}/users/avatar.png`} className={styles.topAvatar} />
               }
             </div>
           </Button>
@@ -95,8 +76,8 @@ export default function Topbar() {
           horizontal: 'left',
         }}
       >
-        <MenuItem onClick={handleClose}>{user.email}</MenuItem>
-        <MenuItem onClick={handleClose} style={{ textTransform: "capitalize" }}>{user.role}</MenuItem>
+        <MenuItem onClick={handleClose}>{user?.email}</MenuItem>
+        <MenuItem onClick={handleClose} style={{ textTransform: "capitalize" }}>{user?.role}</MenuItem>
         <MenuItem onClick={handleLogout} style={{ color: 'red' }}>Logout</MenuItem>
       </Menu>
     </div >

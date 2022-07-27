@@ -12,14 +12,16 @@
 .productListItem{
     display: flex;
     align-items: center;
+    margin-right: 10px;
 }
 
 .productListImg {
-    width: 32px;
-    height: 32px;
+    /* width: 32px;
+    height: 32px; */
+    /* padding-right: 50px; */
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 10px;
+    /* margin-right: 50px; */
   }
 
 .productListEdit{
@@ -104,3 +106,6 @@
     border-radius: 50%;
   }
 
+  .createNewLink{
+    height: 38px;
+  }

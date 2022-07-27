@@ -1,15 +1,10 @@
 import styles from "./Sidebar.module.css";
 import {
-  Home,
-  StoreOutlined,
-  FeaturedVideoOutlined,
-  Category,
   ExitToAppRounded,
   SupervisorAccountOutlined,
   SettingsOutlined,
   HelpOutlineOutlined,
   TrackChangesOutlined,
-
   BusinessCenterOutlined,
   ExpandMoreOutlined,
   ExpandLessOutlined,

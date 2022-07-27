@@ -3,11 +3,7 @@ import Sidebar from "components/Sidebar/Sidebar";
 import Topbar from "components/Topbar/Topbar";
 import { ToastContainer } from 'react-toastify';
 
-import { useRouter } from "next/router";
-
 const Layout = ({ children }) => {
-    const router = useRouter();
-
     return (
         <div className={styles.container}>
             <Topbar />

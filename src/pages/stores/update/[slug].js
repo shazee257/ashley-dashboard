@@ -2,10 +2,12 @@ import styles from "styles/StoreUpdate.module.css";
 import { useState } from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Grid, Paper, TextField, Button, Typography, Link } from '@material-ui/core'
+import { Grid, Paper, TextField, Button, Typography } from '@material-ui/core'
 import axios from 'axios';
 import { useRouter } from "next/router";
 import { showNotification } from "utils/helper";
+import Image from 'next/image';
+import Link from "next/link";
 
 export default function UpdateStore({ store }) {
     const router = useRouter();
@@ -50,8 +52,6 @@ export default function UpdateStore({ store }) {
         e.preventDefault();
 
         const storeData = { title, email, phone_no, address, city, state, country, zip };
-
-        // return console.log(storeData);
 
         try {
             await axios
@@ -139,15 +139,12 @@ export default function UpdateStore({ store }) {
             <div className={styles.imageWithButton}>
                 <div className={styles.productImage}>
                     {(!image && !img_address) ?
-                        (<img className={styles.imgObject}
-                            src={`${process.env.NEXT_PUBLIC_uploadURL}/stores/store.png`}
-                        />)
-                        : (<img className={styles.imgObject}
+                        (<Image height={400} width={400} className={styles.imgObject}
+                            src={`${process.env.NEXT_PUBLIC_uploadURL}/stores/store.png`} />) :
+                        (<Image height={400} width={400} className={styles.imgObject}
                             src={(image != '' && !img_address) ? `${process.env.NEXT_PUBLIC_uploadURL}/stores/${store.banner}` : (img_address)}
                         />)
                     }
-
-
                 </div>
                 <div className={styles.imageButtonContainer}>
                     <div><small>Only jpg, png, gif, svg, webp images are allowed</small></div>

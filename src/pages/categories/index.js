@@ -1,12 +1,14 @@
 import styles from "styles/Categories.module.css";
 import axios from 'axios';
 import { DeleteOutline } from "@material-ui/icons";
-import { Button, Link } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const { formatDate } = require("utils/utils");
 import MuiGrid from 'components/MuiGrid/MuiGrid';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Categories({ categories }) {
     const [data, setData] = useState([]);
@@ -27,23 +29,28 @@ export default function Categories({ categories }) {
             field: "title", headerName: "Category", width: 320,
             renderCell: (params) => {
                 return (
-                    <div className={styles.productListItem}>
-                        <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/categories/${params.row.image}`} />
+                    <>
+                        <div className={styles.productListItem}>
+                            <Image height={32} width={32}
+                                className={styles.productListImg}
+                                src={`${process.env.NEXT_PUBLIC_thumbURL}/categories/${params.row.image}`} />
+                        </div>
                         {params.row.title}
-                    </div>
+                    </>
                 );
             },
         },
         {
             field: "parent_title", headerName: "Parent Category", width: 300,
             renderCell: (params) => {
-                // { params.row.parent_title ? params.row.parent_title : "None" }
                 return (
-                    <div className={styles.productListItem}>
-                        {params.row.parent_image ?
-                            (<img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/categories/${params.row.parent_image}`} />) : "None"}
+                    <>
+                        <div className={styles.productListItem}>
+                            {params.row.parent_image ?
+                                (<Image height={32} width={32} className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/categories/${params.row.parent_image}`} />) : "None"}
+                        </div>
                         {params.row.parent_title}
-                    </div>
+                    </>
                 );
             }
 
@@ -78,7 +85,8 @@ export default function Categories({ categories }) {
             <div className={styles.main}>
                 <h2 className={styles.productTitle}>Product Categories</h2>
                 <Link href="/categories/create">
-                    <Button variant="contained" color="primary" component="label" >Create New</Button>
+                    <Button variant="contained" color="primary" component="label"
+                        className={styles.createNewLink}>Create New</Button>
                 </Link>
             </div>
             <MuiGrid data={data} columns={columns} />

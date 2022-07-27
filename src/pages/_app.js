@@ -4,13 +4,15 @@ import Layout from 'components/Layout/Layout';
 import LoadingPanel from "components/Loader/Loader";
 import Router from "next/router";
 import { useRouter } from "next/router";
+import axios from "axios";
+import Login from "components/Login/Login";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState();
 
   useEffect(() => {
-    console.log(status);
     const start = () => {
       console.log("start");
       setLoading(true);
@@ -31,6 +33,11 @@ function MyApp({ Component, pageProps }) {
       Router.events.off("routeChangeError", end);
     };
   }, []);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    setUser(userData)
+  }, [])
 
   if (router.pathname == "/login") {
     return (

@@ -16,12 +16,11 @@
     display: 'flex'
   }
   
-  .addProductForm {
+.addProductForm {
     margin-top: 10px;
-  }
+}
   
   .addProductItem {
-    width: 250px;
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
@@ -116,7 +115,7 @@
     width: 300px;
     margin: 80px 20px;
     margin-bottom: 0;
-    border-radius: 20px;
+    border-radius: 50%;
     align-content: center;
     border: 3px dashed grey;
     display: flex; 
@@ -127,11 +126,11 @@
 
   .imgObject {
     margin-top: 2px;
-    /* width: 95%;
-    height: 98%; */
-    border-radius: 20px;
+    width: 95%;
+    height: 98%;
+    border-radius: 50%;
   }
-
+  
   .imageButtonContainer {
     display: flex;
     flex-direction: column;
@@ -150,4 +149,18 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-  }
+}
+
+.productListItem{
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.productListImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}

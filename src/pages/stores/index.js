@@ -1,12 +1,14 @@
 import styles from 'styles/Stores.module.css';
 import axios from 'axios';
 import { DeleteOutline } from "@material-ui/icons";
-import { Button, Link } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const { formatDate } = require("utils/utils");
 import MuiGrid from "components/MuiGrid/MuiGrid";
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Stores({ stores }) {
     const [data, setData] = useState([]);
@@ -25,13 +27,16 @@ export default function Stores({ stores }) {
             field: "title", headerName: "Store", width: 220,
             renderCell: (params) => {
                 return (
-                    <div className={styles.productListItem}>
-                        <img className={styles.productListImg}
-                            src={params.row.banner ?
-                                `${process.env.NEXT_PUBLIC_thumbURL}/stores/${params.row.banner}` :
-                                `${process.env.NEXT_PUBLIC_thumbURL}/stores/store.png`} />
+                    <>
+                        <div className={styles.productListItem}>
+                            <Image height={32} width={32} className={styles.productListImg}
+                                src={params.row.banner ?
+                                    `${process.env.NEXT_PUBLIC_thumbURL}/stores/${params.row.banner}` :
+                                    `${process.env.NEXT_PUBLIC_thumbURL}/stores/store.png`} />
+
+                        </div>
                         {params.row.title}
-                    </div>
+                    </>
                 );
             },
         },
@@ -70,7 +75,9 @@ export default function Stores({ stores }) {
             <div className={styles.main}>
                 <h2 className={styles.productTitle}>Stores</h2>
                 <Link href="/stores/create">
-                    <Button variant="contained" color="primary" component="label" >Create New</Button>
+                    <Button variant="contained"
+                        color="primary" component="label"
+                        className={styles.createNewLink}>Create New</Button>
                 </Link>
             </div>
             <MuiGrid data={data} columns={columns} />

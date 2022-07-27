@@ -1,12 +1,14 @@
 import styles from 'styles/Brands.module.css';
 import axios from 'axios';
 import { DeleteOutline } from "@material-ui/icons";
-import { Button, Link } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MuiGrid from 'components/MuiGrid/MuiGrid';
 const { formatDate } = require("utils/utils");
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Brands({ brands }) {
     const [data, setData] = useState([]);
@@ -25,10 +27,12 @@ export default function Brands({ brands }) {
             field: "title", headerName: "Brand", width: 320,
             renderCell: (params) => {
                 return (
-                    <div className={styles.productListItem}>
-                        <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/brands/${params.row.image}`} />
+                    <>
+                        <div className={styles.productListItem}>
+                            <Image height={32} width={32} className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/brands/${params.row.image}`} />
+                        </div>
                         {params.row.title}
-                    </div>
+                    </>
                 );
             },
         },
@@ -62,7 +66,8 @@ export default function Brands({ brands }) {
             <div className={styles.main}>
                 <h2 className={styles.productTitle}>Brands</h2>
                 <Link href="/brands/create">
-                    <Button variant="contained" color="primary" component="label" >Create New</Button>
+                    <Button variant="contained" color="primary" component="label"
+                        className={styles.createNewLink}>Create New</Button>
                 </Link>
             </div>
             <MuiGrid data={data} columns={columns} />

@@ -2,9 +2,10 @@ import styles from "styles/BrandNew.module.css";
 import { useState, useRef } from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Grid, Paper, TextField, Button, Typography, Link, Select, InputLabel, MenuItem, FormControl } from '@material-ui/core'
+import { Grid, Paper, TextField, Button, Typography, Select, InputLabel, MenuItem, FormControl } from '@material-ui/core'
 import axios from 'axios';
 import { showNotification } from "utils/helper";
+import Link from "next/link";
 
 export default function NewBrand() {
     const titleRef = useRef(null);

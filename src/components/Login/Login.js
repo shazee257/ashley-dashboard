@@ -14,15 +14,6 @@ const Login = () => {
     const emailRef = useRef();
     const passwordRef = useRef();
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem("token");
-    //     if (token) {
-    //         router.push("/");
-    //     } else {
-    //         router.push("/login");
-    //     }
-    // }, [])
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -63,14 +54,12 @@ const Login = () => {
                         label='Email'
                         placeholder='Enter Email'
                         fullWidth
-                        value="admin@gmail.com"
                         inputRef={emailRef}
                     />
                     <TextField
                         label='Password'
                         placeholder='Enter password'
                         type='password'
-                        value="121212"
                         fullWidth
                         inputRef={passwordRef}
                     />

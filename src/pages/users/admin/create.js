@@ -2,9 +2,10 @@ import styles from "styles/UserAdminCreate.module.css";
 import { useState, useRef } from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Grid, Paper, TextField, Button, Typography, Link } from '@material-ui/core'
+import { Grid, Paper, TextField, Button, Typography } from '@material-ui/core'
 import axios from 'axios';
 import { showNotification } from "utils/helper";
+import Link from "next/link";
 
 export default function NewUser() {
     const firstNameRef = useRef(null);
@@ -67,10 +68,9 @@ export default function NewUser() {
                     clearForm();
                 }).catch(err => showNotification(err));
         } catch (error) {
-            let message = error.response ? error.response.data.message : "Only image files are allowed!";
-            toast.error(message);
-        }
-    };
+            showNotification(err)
+        };
+    }
 
     return (
         <div className={styles.main}>
@@ -120,7 +120,7 @@ export default function NewUser() {
                             variant="contained"
                             style={{ margin: '8px 0' }}
                             fullWidth>
-                            Create Admin User
+                            Create
                         </Button>
                     </form>
                     <br />

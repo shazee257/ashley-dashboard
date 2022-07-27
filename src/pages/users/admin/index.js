@@ -1,12 +1,14 @@
 import styles from 'styles/UsersAdmin.module.css';
 import axios from 'axios';
 import { DeleteOutline, Phone } from "@material-ui/icons";
-import { Link, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MuiGrid from 'components/MuiGrid/MuiGrid';
 const { formatDate } = require("utils/utils");
 import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function AdminUsers({ users }) {
     const [data, setData] = useState(users);
@@ -23,12 +25,19 @@ export default function AdminUsers({ users }) {
             field: "first_name", headerName: "User", width: 240,
             renderCell: (params) => {
                 return (
-                    <div className={styles.productListItem}>
-                        {params.row.image ? <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_thumbURL}/users/${params.row.image}`} />
-                            : <img className={styles.productListImg} src={`${process.env.NEXT_PUBLIC_uploadURL}/users/avatar.png`} />
-                        }
+                    <>
+                        <div className={styles.productListItem}>
+                            {params.row.image ?
+                                <Image height={32} width={32}
+                                    className={styles.productListImg}
+                                    src={`${process.env.NEXT_PUBLIC_thumbURL}/users/${params.row.image}`} />
+                                : <Image height={32} width={32}
+                                    className={styles.productListImg}
+                                    src={`${process.env.NEXT_PUBLIC_uploadURL}/users/avatar.png`} />
+                            }
+                        </div>
                         {`${params.row.first_name} ${params.row.last_name}`}
-                    </div>
+                    </>
                 );
             },
         },
@@ -47,23 +56,6 @@ export default function AdminUsers({ users }) {
                 );
             }
         },
-        {
-            field: "alternet_phone_no", headerName: "Alternet Phone #", width: 180,
-            renderCell: (params) => {
-                return (
-                    <>
-                        {(params.row.alternet_phone_no) && (
-                            <div className={styles.productListItem}>
-                                <Phone className={styles.phoneIcon} />
-                                <button className={styles.phoneNoButton}>{params.row.alternet_phone_no}</button>
-                            </div>)}
-                    </>
-                );
-            }
-
-
-        },
-
         {
             field: "createdAt", headerName: "Created on", width: 150, type: "dateTime",
             valueFormatter: (params) => formatDate(params.value),
@@ -93,7 +85,8 @@ export default function AdminUsers({ users }) {
             <div className={styles.main}>
                 <h2 className={styles.productTitle}>Admin Users</h2>
                 <Link href="/users/admin/create">
-                    <Button variant="contained" color="primary" component="label">Create New</Button>
+                    <Button variant="contained" color="primary" component="label"
+                        className={styles.createNewLink}>Create New</Button>
                 </Link>
             </div>
             <MuiGrid data={data} columns={columns} />

@@ -12,15 +12,15 @@
 .productListItem{
     display: flex;
     align-items: center;
+    margin-right: 10px;
 }
 
 .productListImg {
-    width: 32px;
-    height: 32px;
+    /* width: 32px;
+    height: 32px; */
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 10px;
-  }
+}
 
 .productListEdit{
     border: none;
@@ -102,4 +102,8 @@
   
   .slider.round:before {
     border-radius: 50%;
+  }
+
+  .createNewLink{
+    height: 38px;
   }

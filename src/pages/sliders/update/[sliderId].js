@@ -2,17 +2,19 @@ import styles from "styles/BrandUpdate.module.css";
 import { useEffect, useState, useRef } from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Grid, Paper, TextField, Button, Typography, Link, Select, InputLabel, MenuItem, FormControl } from '@material-ui/core'
+import { Grid, Paper, TextField, Button, Typography } from '@material-ui/core'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { showNotification } from "utils/helper";
+import Link from 'next/link';
+import Image from "next/image";
 
 export default function UpdateBrand({ slider }) {
     const router = useRouter();
     const titleRef = useRef(null);
     const subTitleRef = useRef(null);
     const descriptionRef = useRef(null);
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState(slider.image);
     const [img_address, setImg_address] = useState("");
     const [filename, setFilename] = useState("Choose Image");
 
@@ -20,7 +22,6 @@ export default function UpdateBrand({ slider }) {
         titleRef.current.value = slider.title;
         subTitleRef.current.value = slider.sub_title;
         descriptionRef.current.value = slider.description;
-        setImage(slider.image);
     }, []);
 
     const fileSelectedHandler = async (e) => {
@@ -111,24 +112,23 @@ export default function UpdateBrand({ slider }) {
                     <Button onClick={handleSubmit} type='submit' color='primary' variant="contained" className={styles.btnstyle} fullWidth>Update Slider Content</Button>
                     <br /><br />
                     <Typography >
-                        <Link href="/sliders">Back to Sliders</Link>
+                        <Link href="/sliders">Back to Slider Contents</Link>
                     </Typography>
                 </Paper>
             </Grid>
             <div className={styles.productImage}>
-                <img className={styles.imgObject}
-                    src={(image && !img_address) ? `${process.env.NEXT_PUBLIC_uploadURL}/${image}` : (img_address)}
+                <Image height={400} width={400} className={styles.imgObject}
+                    src={img_address ? img_address : `${process.env.NEXT_PUBLIC_uploadURL}/slider/${image}`}
                 />
             </div>
             <br />
         </div>
     );
-
 }
 
 export async function getServerSideProps(context) {
-    const { id } = context.query;
-    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/sliders/${id}`);
+    const { sliderId } = context.query;
+    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/sliders/${sliderId}`);
     return {
         props: {
             slider: data.slider

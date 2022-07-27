@@ -1,16 +1,17 @@
 import styles from 'styles/Sliders.module.css';
 import axios from 'axios';
 import { DeleteOutline } from "@material-ui/icons";
-import { Link, Button, Switch } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MuiGrid from 'components/MuiGrid/MuiGrid';
 const { formatDate } = require("utils/utils");
 import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Customers({ sliders }) {
     const [data, setData] = useState(sliders);
-    const [status, setStatus] = useState();
 
     const handleDelete = async (id) => {
         await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/sliders/${id}`)
@@ -29,14 +30,16 @@ export default function Customers({ sliders }) {
             field: "title", headerName: "Title", width: 260,
             renderCell: (params) => {
                 return (
-                    <div className={styles.productListItem}>
-                        <img
-                            className={styles.productListImg}
-                            src={`${process.env.NEXT_PUBLIC_thumbURL}/slider/${params.row.image}`}
-                            onClick={() => imageHandler(params.row.image)}
-                        />
-                        <Link href={`/sliders/update/${params.row.id}`}>{params.row.title}</Link>
-                    </div>
+                    <>
+                        <div className={styles.productListItem}>
+                            <Image height={32} width={32}
+                                className={styles.productListImg}
+                                src={`${process.env.NEXT_PUBLIC_thumbURL}/slider/${params.row.image}`}
+                                onClick={() => imageHandler(params.row.image)}
+                            />
+                        </div>
+                        {params.row.title}
+                    </>
                 );
             },
         },
@@ -71,7 +74,8 @@ export default function Customers({ sliders }) {
             <div className={styles.main}>
                 <h2 className={styles.productTitle}>Slider Content</h2>
                 <Link href="/sliders/create">
-                    <Button variant="contained" color="primary" component="label">Create New</Button>
+                    <Button variant="contained" color="primary" component="label"
+                        className={styles.createNewLink}>Create New</Button>
                 </Link>
             </div>
             <MuiGrid data={data} columns={columns} />

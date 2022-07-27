@@ -12,6 +12,7 @@
 .productListItem{
   display: flex;
   align-items: center;
+  margin-right: 10px;
 }
 
 .productListImg {
@@ -103,7 +104,12 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-  .imgObject {
+
+.imgObject {
     width: 95%;
     height: 95%;
-  }
+}
+
+.createNewLink{
+    height: 38px;
+}

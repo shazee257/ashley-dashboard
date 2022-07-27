@@ -1,17 +1,19 @@
-import styles from "styles/UserAdminUpdate.module.css";
-import { useEffect, useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
+import styles from "styles/UserStoreUpdate.module.css";
+import { useState, useRef } from "react";
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Grid, Paper, TextField, Button, Typography, Link } from '@material-ui/core'
+import { Grid, Paper, TextField, Button, Typography, InputLabel, MenuItem, Select } from '@material-ui/core'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { showNotification } from "utils/helper";
 import { imageSource } from "utils/utils";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function UpdateBrand(props) {
     const router = useRouter();
 
-    const userObj = {
+    const initialProps = {
         first_name: props.user.first_name,
         last_name: props.user.last_name,
         email: props.user.email,
@@ -20,16 +22,13 @@ export default function UpdateBrand(props) {
         confirm_password: "",
     }
 
-    const [user, setUser] = useState(userObj);
+    const [storeId, setStoreId] = useState(props.user.store_id);
+
+    const [user, setUser] = useState(initialProps);
 
     const [image, setImage] = useState(props.user.image || "");
     const [filename, setFilename] = useState("Choose Image");
     const [img_address, setImg_address] = useState("");
-    // const [selectedFile, setSelectedFile] = useState("");
-
-    useEffect(() => {
-        console.log('user', props.user);
-    }, []);
 
     const fileSelectedHandler = async (e) => {
         if (e.target.value) {
@@ -57,31 +56,30 @@ export default function UpdateBrand(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const fd = new FormData();
-        fd.append("image", selectedFile);
-        fd.append("first_name", firstNameRef.current.value);
-        fd.append("last_name", lastNameRef.current.value);
-        fd.append("email", emailRef.current.value);
-        fd.append("role", "admin");
-        fd.append("phone_no", phoneNoRef.current.value);
-        fd.append("password", passwordRef.current.value);
-        fd.append("confirm_password", confirmPasswordRef.current.value);
+        const userObj = {
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            phone_no: user.phone_no,
+            password: user.password,
+            confirm_password: user.confirm_password,
+            store_id: storeId,
+        }
 
         const config = {
-            headers: { 'Content-Type': 'multipart/form-data' }
+            headers: { 'Content-Type': 'application/json' }
         }
 
         try {
             await axios
-                .post(`${process.env.NEXT_PUBLIC_baseURL}/${user._id}`, fd, config)
+                .put(`${process.env.NEXT_PUBLIC_baseURL}/users/${props.user._id}`, userObj, config)
                 .then(({ data }) => {
                     console.log(data);
                     data.success && toast.success(data.message);
-                    router.push("/admin/users");
+                    router.push("/users/store");
                 }).catch(err => showNotification(err));
         } catch (error) {
-            let message = error.response ? error.response.data.message : "Only image files are allowed!";
-            toast.error(message);
+            showNotification(err)
         }
     };
 
@@ -93,7 +91,7 @@ export default function UpdateBrand(props) {
                         <h2>Update Store User</h2>
                     </Grid>
                     <br />
-                    <form encType='multipart/form-data'>
+                    <form>
                         <TextField
                             className={styles.addProductItem}
                             label='First Name' placeholder='Enter First Name'
@@ -110,7 +108,27 @@ export default function UpdateBrand(props) {
                             label='Email' placeholder='Enter Email'
                             value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })}
                         />
-                        <br />
+                        <br /><br />
+                        <InputLabel>Select Store</InputLabel>
+                        <Select fullWidth displayEmpty
+                            label="Store"
+                            value={storeId}
+                            onChange={(e) => setStoreId(e.target.value)}
+                        >
+                            {props.stores.map((store) => (
+                                <MenuItem value={store._id} key={store._id}>
+                                    <div className={styles.productListItem}>
+                                        <div className={styles.productListItem}>
+                                            <Image height={32} width={32}
+                                                className={styles.productListImg}
+                                                src={`${process.env.NEXT_PUBLIC_thumbURL}/stores/${store.banner}`} />
+                                        </div>
+                                        {store.title}
+                                    </div>
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <br /><br />
                         <TextField className={styles.addProductItem}
                             label='Phone #'
                             placeholder='Enter Phone #'
@@ -118,12 +136,14 @@ export default function UpdateBrand(props) {
                         />
                         <br />
                         <TextField className={styles.addProductItem}
-                            type='password' label='Password' placeholder='Enter Password'
+                            label='Password' placeholder='Enter Password'
+                            type="password"
                             value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })}
                         />
                         <br />
                         <TextField className={styles.addProductItem}
-                            type='password' label='Confirm Password' placeholder='Enter Confirm Password'
+                            label='Confirm Password' placeholder='Enter Password again'
+                            type="password"
                             value={user.confirm_password} onChange={(e) => setUser({ ...user, confirm_password: e.target.value })}
                         />
                         <br />
@@ -135,7 +155,7 @@ export default function UpdateBrand(props) {
                             variant="contained"
                             style={{ margin: '8px 0' }}
                             fullWidth>
-                            Update Store User
+                            Update
                         </Button>
                     </form>
                     <br /><br />
@@ -146,9 +166,10 @@ export default function UpdateBrand(props) {
             </Grid>
             <div className="imageWithButton">
                 <div className={styles.productImage}>
-                    <img className={styles.imgObject}
-                        // src={(image && !img_address) ? (`${process.env.NEXT_PUBLIC_uploadURL}/${props.user.image}`) : (img_address && `${process.env.NEXT_PUBLIC_uploadURL}/avatar.png`)} />
-                        src={imageSource(image, img_address, props.user.image)} />
+
+                    <Image height={400} width={400}
+                        className={styles.imgObject}
+                        src={img_address ? img_address : `${process.env.NEXT_PUBLIC_uploadURL}/users/${image}`} />
                 </div>
                 <div className={styles.imageButtonContainer}>
                     <div><small>Only jpg, png, gif, svg, webp images are allowed</small></div>
@@ -164,10 +185,12 @@ export default function UpdateBrand(props) {
 export async function getServerSideProps(context) {
     const { userId } = context.query;
     const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/users/${userId}`);
+    const storesData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/stores`);
 
     return {
         props: {
-            user: data.user
+            user: data.user,
+            stores: storesData.data.stores
         }
     };
 }

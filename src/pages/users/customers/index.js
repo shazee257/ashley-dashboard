@@ -1,21 +1,15 @@
 import styles from 'styles/UsersCustomers.module.css';
 import axios from 'axios';
 import { DeleteOutline, Phone } from "@material-ui/icons";
-import { Link, Button } from "@material-ui/core";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MuiGrid from 'components/MuiGrid/MuiGrid';
 const { formatDate } = require("utils/utils");
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import Image from 'next/image';
 
 export default function Customers({ users }) {
-    const [data, setData] = useState([]);
-
-
-    useEffect(() => {
-        setData(users);
-    }, [users]);
-
+    const [data, setData] = useState(users);
 
     const handleDelete = async (id) => {
         await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/users/${id}`)
@@ -30,13 +24,15 @@ export default function Customers({ users }) {
             renderCell: (params) => {
                 console.log(params.row.image);
                 return (
-                    <div className={styles.productListItem}>
-                        <img className={styles.productListImg}
-                            src={params.row.image ?
-                                `${process.env.NEXT_PUBLIC_thumbURL}/users/${params.row.image}` :
-                                `${process.env.NEXT_PUBLIC_thumbURL}/users/avatar.png`} />
+                    <>
+                        <div className={styles.productListItem}>
+                            <Image height={32} width={32}
+                                src={params.row.image ?
+                                    `${process.env.NEXT_PUBLIC_thumbURL}/users/${params.row.image}` :
+                                    `${process.env.NEXT_PUBLIC_thumbURL}/users/avatar.png`} />
+                        </div>
                         {`${params.row.first_name} ${params.row.last_name}`}
-                    </div>
+                    </>
                 );
             },
         },
@@ -105,9 +101,10 @@ export default function Customers({ users }) {
         <div className={styles.productList}>
             <div className={styles.main}>
                 <h2 className={styles.productTitle}>Customers</h2>
-                <Link href="/users/store/create">
-                    {/* <Button variant="contained" color="primary" component="label">Create New</Button> */}
-                </Link>
+
+                {/* <Link href="/users/store/create"> */}
+                {/* <Button variant="contained" color="primary" component="label">Create New</Button> */}
+                {/* </Link> */}
             </div>
             <MuiGrid data={data} columns={columns} />
         </div>

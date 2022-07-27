@@ -7,10 +7,16 @@
 //     }
 // }
 
+// module.exports = {
+//     env: {
+//         "NEXT_PUBLIC_baseURL": "http://localhost:5000",
+//         "NEXT_PUBLIC_uploadURL": "http://localhost:5000/uploads",
+//         "NEXT_PUBLIC_thumbURL": "http://localhost:5000/uploads/thumbs",
+//     }
+// }
+
 module.exports = {
-    env: {
-        "NEXT_PUBLIC_baseURL": "http://localhost:5000",
-        "NEXT_PUBLIC_uploadURL": "http://localhost:5000/uploads",
-        "NEXT_PUBLIC_thumbURL": "http://localhost:5000/uploads/thumbs",
-    }
+    images: {
+        domains: ["localhost"]
+    },
 }

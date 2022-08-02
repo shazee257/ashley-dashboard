@@ -10,8 +10,24 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+export const Modal = ({ src, alt, caption, onClose }) => {
+    return (
+        <div className={styles.modal}>
+            <span className={styles.close} onClick={onClose}>
+                &times;
+            </span>
+            <img className={`${styles}.modal-content`} src={src} alt={alt} />
+            {caption.length > 0 && <div className={styles.caption}>{caption}</div>}
+        </div>
+    )
+}
+
 export default function Customers({ sliders }) {
     const [data, setData] = useState(sliders);
+    const [isOpen, setIsOpen] = useState(false)
+    const showModal = () => setIsOpen(true)
+    const [slider, setSlider] = useState();
+
 
     const handleDelete = async (id) => {
         await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/sliders/${id}`)
@@ -20,9 +36,9 @@ export default function Customers({ sliders }) {
     }
 
     // open image in new tab
-    const imageHandler = (image) => {
-        window.open(`${process.env.NEXT_PUBLIC_uploadURL}/slider/${image}`, '_blank');
-    }
+    // const imageHandler = (image) => {
+    //     window.open(`${process.env.NEXT_PUBLIC_uploadURL}/slider/${image}`, '_blank');
+    // }
 
     const columns = [
         { field: "id", headerName: "ID", width: 330, hide: true },
@@ -35,7 +51,9 @@ export default function Customers({ sliders }) {
                             <Image height={32} width={32}
                                 className={styles.productListImg}
                                 src={`${process.env.NEXT_PUBLIC_thumbURL}/slider/${params.row.image}`}
-                                onClick={() => imageHandler(params.row.image)}
+                                onClick={() => { showModal(); setSlider(params.row) }}
+
+                            // onClick={() => imageHandler(params.row.image)}
                             />
                         </div>
                         {params.row.title}
@@ -79,6 +97,18 @@ export default function Customers({ sliders }) {
                 </Link>
             </div>
             <MuiGrid data={data} columns={columns} />
+
+            <div className={styles.App}>
+                {isOpen &&
+                    (<Modal
+                        src={`${process.env.NEXT_PUBLIC_uploadURL}/slider/${slider.image}`}
+                        alt={slider.title}
+                        caption={slider.title}
+                        onClose={() => setIsOpen(false)}
+                    />)}
+            </div>
+
+
         </div>
     );
 }

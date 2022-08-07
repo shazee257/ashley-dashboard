@@ -126,12 +126,16 @@ export default function UpdateCategory({ category, categories }) {
 
 export async function getServerSideProps(context) {
     const { slug } = context.query;
-    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories/${slug}`);
+    const categoryData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories/${slug}`);
     const categoriesData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories`);
+
+    console.log("slug", slug);
+    console.log("categoryData", categoryData.data.category);
+    console.log("categoriesData", categoriesData.data.categories);
 
     return {
         props: {
-            category: data.category,
+            category: categoryData.data.category,
             categories: categoriesData.data.categories
         }
     };

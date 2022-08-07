@@ -57,7 +57,7 @@ export default function NewCategory({ categories }) {
 
         const fd = new FormData();
         fd.append('title', titleRef.current.value);
-        fd.append('parent_id', parentIdRef.current.value);
+        fd.append('parent_id', (parentIdRef.current.value == "undefined") ? "" : parentIdRef.current.value);
         fd.append('image', selectedFile);
 
         const config = {

@@ -11,9 +11,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Brands({ brands }) {
-    const [data, setData] = useState([]);
-
-    useEffect(() => setData(brands), []);
+    const [data, setData] = useState(brands);
 
     const handleDelete = async (slug) => {
         await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/brands/${slug}`)
@@ -77,6 +75,8 @@ export default function Brands({ brands }) {
 }
 
 export const getServerSideProps = async () => {
+    // const hostname = context.req.headers.host.split('.')[0];
+    // console.log("hostname", hostname);
     const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/brands`);
     return {
         props: {

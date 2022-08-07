@@ -11,11 +11,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Categories({ categories }) {
-    const [data, setData] = useState([]);
-
-    useEffect(() => {
-        setData(categories);
-    }, []);
+    const [data, setData] = useState(categories);
 
     const handleDelete = async (slug) => {
         await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/categories/${slug}`)
@@ -95,10 +91,11 @@ export default function Categories({ categories }) {
 }
 
 export const getServerSideProps = async () => {
-    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories`);
+    const categoryData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories`);
+
     return {
         props: {
-            categories: data.categories
+            categories: categoryData.data.categories
         }
     };
 }

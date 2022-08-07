@@ -53,6 +53,12 @@ export default function Sidebar() {
               </Link>
             </li>
 
+            <li className={`${styles.li} ${RegExp(/products/).test(router.pathname) ? styles.active : ""}`}>
+              <Link href='/products' className={`${styles.sidebarListItem} ${styles.link}`}>
+                <a className={styles.anchor}>Products</a>
+              </Link>
+            </li>
+
             <li className={`${styles.li} ${RegExp(/stores/).test(router.pathname) ? styles.active : ""}`}>
               <Link href='/stores' className={`${styles.sidebarListItem} ${styles.link}`}>
                 <a className={styles.anchor}>Stores</a>

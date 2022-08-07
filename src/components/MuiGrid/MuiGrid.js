@@ -7,7 +7,7 @@ const MuiGrid = ({ data, columns }) => {
     return (
         <DataGrid
             rows={data}
-            disableSelectionOnClick
+            // disableSelectionOnClick
             columns={columns}
             rowsPerPageOptions={[10, 20, 50, 100]}
             pageSize={pageSize}
@@ -15,6 +15,8 @@ const MuiGrid = ({ data, columns }) => {
             rowHeight={40}
             checkboxSelection
             autoHeight={true}
+            onRowClick={(event) => console.log(event)}
+            disableSelectionOnClick={true}
         />
     )
 }

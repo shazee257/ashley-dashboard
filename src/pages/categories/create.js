@@ -15,8 +15,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function NewCategory({ categories }) {
-    const titleRef = useRef(null);
-    const parentIdRef = useRef(null);
+    const [title, setTitle] = useState("");
+    const [parentId, setParentId] = useState("");
     const [image, setImage] = useState("");
     const [filename, setFilename] = useState("Choose Image");
     const [selectedFile, setSelectedFile] = useState("");
@@ -46,8 +46,8 @@ export default function NewCategory({ categories }) {
     }
 
     const clearForm = () => {
-        titleRef.current.value = "";
-        parentIdRef.current.value = "";
+        setTitle("");
+        setParentId("");
         setImage("");
         setFilename("Choose Image");
         setSelectedFile("");
@@ -57,8 +57,9 @@ export default function NewCategory({ categories }) {
         e.preventDefault();
 
         const fd = new FormData();
-        fd.append('title', titleRef.current.value);
-        fd.append('parent_id', (parentIdRef.current.value == "undefined") ? "" : parentIdRef.current.value);
+        fd.append('title', title);
+        fd.append('parent_id', parentId);
+        fd.append('attributes', selected);
         fd.append('image', selectedFile);
 
         const config = {
@@ -91,15 +92,17 @@ export default function NewCategory({ categories }) {
                             className={styles.addProductItem}
                             label='Category Title'
                             placeholder='Enter Category Title'
-                            fullWidth name="title"
-                            inputRef={titleRef}
+                            fullWidth
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
                         />
                         <br /><br />
 
                         <InputLabel>Parent Category</InputLabel>
                         <Select fullWidth displayEmpty
                             label="Parent Category"
-                            inputRef={parentIdRef}
+                            value={parentId}
+                            onChange={(e) => setParentId(e.target.value)}
                         >
                             <MenuItem value=""><em>None</em></MenuItem>
                             {categories.map((category) => (
@@ -116,9 +119,10 @@ export default function NewCategory({ categories }) {
                             ))}
                         </Select>
                         <br /><br />
-                        <InputLabel id="mutiple-select-label">Multiple Select</InputLabel>
+                        <InputLabel id="mutiple-select-label">Filter Attributes for Category's Products</InputLabel>
                         <Select
                             fullWidth
+                            label="Filter Attributes for Category's Product"
                             labelId="mutiple-select-label"
                             multiple
                             maxRows={4}

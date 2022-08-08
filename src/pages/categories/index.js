@@ -63,7 +63,7 @@ export default function Categories({ categories }) {
             renderCell: (params) => {
                 return (
                     <>
-                        <Link href={"/categories/update/" + params.row.slug}>
+                        <Link href={"/categories/update/" + params.row.id}>
                             <button className={styles.productListEdit}>Edit</button>
                         </Link>
                         <DeleteOutline

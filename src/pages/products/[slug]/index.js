@@ -10,8 +10,8 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function Stores({ products }) {
-    const [data, setData] = useState(products);
+export default function Variation({ product, variants }) {
+    const [data, setData] = useState(product);
 
     const handleDelete = async (slug) => {
         await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/products/${slug}`)
@@ -92,7 +92,14 @@ export default function Stores({ products }) {
         },
     ];
 
-    const productSelectHandler = (e) => window.location.href = `/products/${e.row.slug}`;
+    const productSelectHandler = (e) => {
+        let variants = e.row.variants.map((item) => {
+            item.id = item._id;
+            return item;
+        })
+        setVariants(variants);
+    }
+
 
     return (
         <div className={styles.productList}>
@@ -105,16 +112,26 @@ export default function Stores({ products }) {
                 </Link>
             </div>
 
-            <MuiGrid data={data} columns={columns} clickHanlder={productSelectHandler} />
+            <MuiGrid columns={columns} data={data} />
+
         </div>
     );
 }
 
-export async function getServerSideProps() {
-    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/products`);
+export async function getServerSideProps(context) {
+    const { slug } = context.query;
+    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/products/${slug}`);
+    let variants;
+    if (data.product.is_sizes_with_colors) {
+        variants = data.product.variants
+    }
+
+    console.log("variants", variants);
+
     return {
         props: {
-            products: data.products,
+            product: data.product,
+            variants: variants,
         },
     };
 }

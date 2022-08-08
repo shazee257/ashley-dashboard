@@ -151,3 +151,9 @@
     align-items: center;
     flex-direction: column;
   }
+
+  .productListItem{
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}

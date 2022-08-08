@@ -83,17 +83,30 @@ export default function UpdateCategory({ category, categories }) {
                     </Grid>
                     <br />
                     <form>
-                        <TextField className={styles.addProductItem} label='Category Title' placeholder='Enter Category Title' fullWidth name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                        <TextField
+                            className={styles.addProductItem}
+                            label='Category Title'
+                            placeholder='Enter Category Title'
+                            fullWidth
+                            value={title} onChange={(e) => setTitle(e.target.value)}
+                        />
                         <br /><br />
                         <InputLabel>Parent Category</InputLabel>
-                        <Select fullWidth displayEmpty
-                            value={parentId}
-                            label="Parent Category"
-                            onChange={(e) => setParentId(e.target.value)}
+                        <Select fullWidth 
+                        label="Parent Category"
+                            value={parentId} onChange={(e) => setParentId(e.target.value)}
                         >
-                            <MenuItem value=""><em>None</em></MenuItem>
                             {categories.map((category) => (
-                                <MenuItem value={category._id} key={category._id}>{category.title}</MenuItem>
+                                <MenuItem value={category._id} key={category._id}>
+                                    <div className={styles.productListItem}>
+                                        <div className={styles.productListItem}>
+                                            <Image height={32} width={32}
+                                                className={styles.productListImg}
+                                                src={`${process.env.NEXT_PUBLIC_thumbURL}/categories/${category.image}`} />
+                                        </div>
+                                        {category.title}
+                                    </div>
+                                </MenuItem>
                             ))}
                         </Select>
                         <br /><br />
@@ -129,7 +142,6 @@ export async function getServerSideProps(context) {
     const categoryData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories/${slug}`);
     const categoriesData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories`);
 
-    console.log("slug", slug);
     console.log("categoryData", categoryData.data.category);
     console.log("categoriesData", categoriesData.data.categories);
 

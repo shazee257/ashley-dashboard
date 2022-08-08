@@ -12,6 +12,7 @@ import axios from 'axios';
 import { showNotification } from "utils/helper";
 import { MenuProps, useStyles, options } from "components/FilterOptions/FilterOptions";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function NewCategory({ categories }) {
     const titleRef = useRef(null);
@@ -61,16 +62,14 @@ export default function NewCategory({ categories }) {
         fd.append('image', selectedFile);
 
         const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
+            headers: { 'Content-Type': 'multipart/form-data' }
         }
 
         try {
             await axios
                 .post(`${process.env.NEXT_PUBLIC_baseURL}/categories`, fd, config)
                 .then(({ data }) => {
-                    data.success && toast.success(data.message);
+                    data.success && showNotification("", data.message, "success");
                     clearForm();
                 }).catch(err => showNotification(err));
         } catch (error) {
@@ -96,6 +95,7 @@ export default function NewCategory({ categories }) {
                             inputRef={titleRef}
                         />
                         <br /><br />
+
                         <InputLabel>Parent Category</InputLabel>
                         <Select fullWidth displayEmpty
                             label="Parent Category"
@@ -103,7 +103,16 @@ export default function NewCategory({ categories }) {
                         >
                             <MenuItem value=""><em>None</em></MenuItem>
                             {categories.map((category) => (
-                                <MenuItem value={category._id} key={category._id}>{category.title}</MenuItem>
+                                <MenuItem value={category._id} key={category._id}>
+                                    <div className={styles.productListItem}>
+                                        <div className={styles.productListItem}>
+                                            <Image height={32} width={32}
+                                                className={styles.productListImg}
+                                                src={`${process.env.NEXT_PUBLIC_thumbURL}/categories/${category.image}`} />
+                                        </div>
+                                        {category.title}
+                                    </div>
+                                </MenuItem>
                             ))}
                         </Select>
                         <br /><br />
@@ -149,7 +158,6 @@ export default function NewCategory({ categories }) {
                         </Select>
                         <br /><br />
 
-
                         <Button onClick={handleSubmit} type='submit' color='primary' variant="contained" style={{ margin: '8px 0' }} fullWidth>Add Category</Button>
                     </form>
                     <br />
@@ -165,7 +173,7 @@ export default function NewCategory({ categories }) {
                 <div className={styles.imageButtonContainer}>
                     <div><small>Only jpg, png, gif, svg, webp images are allowed</small></div>
                     <Button className={styles.imageButton} variant="contained" component="label" >Choose Image
-                        <input type="file" name="image" hidden onChange={fileSelectedHandler} accept="image/*" />
+                        <input type="file" name="image" hidden onChange={fileSelectedHandler} accept="image/webp, image/*" />
                     </Button>
                 </div>
             </div>

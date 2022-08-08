@@ -1,4 +1,4 @@
-import styles from 'styles/Stores.module.css';
+import styles from 'styles/Product.module.css';
 import axios from 'axios';
 import { DeleteOutline } from "@material-ui/icons";
 import { Button } from '@material-ui/core';
@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function Stores({ products }) {
+export default function Products({ products }) {
     const [data, setData] = useState(products);
 
     const handleDelete = async (slug) => {
@@ -21,9 +21,18 @@ export default function Stores({ products }) {
 
     const columns = [
         { field: "id", headerName: "ID", width: 330, hide: true },
-        { field: "title", headerName: "Product Title", width: 270 },
         {
-            field: "category_id.title", headerName: "Category", width: 240,
+            field: "title", headerName: "Product Title", width: 300,
+            renderCell: (params) => {
+                return (
+                    <strong className={styles.productListTitle}>{params.value}</strong>
+
+                );
+            }
+
+        },
+        {
+            field: "category_id.title", headerName: "Category", width: 220,
             renderCell: (params) => {
                 return (
                     <>
@@ -38,7 +47,7 @@ export default function Stores({ products }) {
             },
         },
         {
-            field: "brand_id.title", headerName: "Brand", width: 210,
+            field: "brand_id.title", headerName: "Brand", width: 190,
             renderCell: (params) => {
                 return (
                     <>
@@ -52,9 +61,8 @@ export default function Stores({ products }) {
                 );
             },
         },
-
         {
-            field: "store_id.title", headerName: "Store", width: 210,
+            field: "store_id.title", headerName: "Store", width: 160,
             renderCell: (params) => {
                 return (
                     <>
@@ -75,10 +83,13 @@ export default function Stores({ products }) {
         {
             field: "action", filterable: false, sortable: false,
             headerName: "Action",
-            width: 100,
+            width: 200,
             renderCell: (params) => {
                 return (
                     <>
+                        <Link href={"/products/" + params.row.slug}>
+                            <button className={styles.productListEdit}>Details</button>
+                        </Link>
                         <Link href={"/products/update/" + params.row.slug}>
                             <button className={styles.productListEdit}>Edit</button>
                         </Link>
@@ -92,8 +103,6 @@ export default function Stores({ products }) {
         },
     ];
 
-    const productSelectHandler = (e) => window.location.href = `/products/${e.row.slug}`;
-
     return (
         <div className={styles.productList}>
             <div className={styles.main}>
@@ -104,8 +113,7 @@ export default function Stores({ products }) {
                         className={styles.createNewLink}>Create New</Button>
                 </Link>
             </div>
-
-            <MuiGrid data={data} columns={columns} clickHanlder={productSelectHandler} />
+            <MuiGrid data={data} columns={columns} />
         </div>
     );
 }

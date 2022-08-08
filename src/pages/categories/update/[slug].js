@@ -12,19 +12,11 @@ import Link from 'next/link';
 export default function UpdateCategory({ category, categories }) {
     const router = useRouter();
 
-    const [title, setTitle] = useState("")
-    const [parentId, setParentId] = useState("");
-    const [parentTitle, setParentTitle] = useState("");
-    const [image, setImage] = useState("");
+    const [title, setTitle] = useState(category.title)
+    const [parentId, setParentId] = useState(category.parent_id);
+    const [image, setImage] = useState(category.image);
     const [img_address, setImg_address] = useState("");
     const [filename, setFilename] = useState("Choose Image");
-
-    useEffect(() => {
-        setTitle(category.title);
-        setParentId(category.parent_id);
-        setParentTitle(category.parent_title);
-        setImage(category.image);
-    }, []);
 
     const fileSelectedHandler = async (e) => {
         if (e.target.value) {
@@ -92,8 +84,8 @@ export default function UpdateCategory({ category, categories }) {
                         />
                         <br /><br />
                         <InputLabel>Parent Category</InputLabel>
-                        <Select fullWidth 
-                        label="Parent Category"
+                        <Select fullWidth displayEmpty
+                            label="Parent Category"
                             value={parentId} onChange={(e) => setParentId(e.target.value)}
                         >
                             {categories.map((category) => (
@@ -139,11 +131,11 @@ export default function UpdateCategory({ category, categories }) {
 
 export async function getServerSideProps(context) {
     const { slug } = context.query;
-    const categoryData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories/${slug}`);
+    const categoryData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories/c/${slug}`);
     const categoriesData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories`);
 
     console.log("categoryData", categoryData.data.category);
-    console.log("categoriesData", categoriesData.data.categories);
+    // console.log("categoriesData", categoriesData.data.categories);
 
     return {
         props: {

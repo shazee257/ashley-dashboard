@@ -17,8 +17,7 @@ export default function NewProduct({ stores, categories, brands }) {
     const [storeId, setStoreId] = useState("");
     const [categoryId, setCategoryId] = useState("");
     const [brandId, setBrandId] = useState("");
-    const [isSizes, setIsSizes] = useState(false);
-    const [isColors, setIsColors] = useState(false);
+    const [attributes, setAttributes] = useState([]);
 
     // clear form fields
     const clearForm = () => {
@@ -26,6 +25,7 @@ export default function NewProduct({ stores, categories, brands }) {
         setStoreId("");
         setCategoryId("");
         setBrandId("");
+        setAttributes([]);
     }
 
     const handleSubmit = async (e) => {
@@ -36,33 +36,31 @@ export default function NewProduct({ stores, categories, brands }) {
             return;
         }
 
-        if (!isColors && !isSizes) {
-            showNotification("", "Please select at least one variation", "warn");
-            return;
-        }
-
         const productData = {
             title,
             store_id: storeId,
             category_id: categoryId,
             brand_id: brandId,
-            isSizes,
-            isColors,
         }
 
         try {
             await axios
                 .post(`${process.env.NEXT_PUBLIC_baseURL}/products`, productData)
                 .then(({ data }) => {
-                    console.log(data);
                     data.success && showNotification("", data.message, "success");
                     clearForm();
-                }).catch(err => showNotification(err));
+                }).catch(err => showNotification("", err.response.data.message, "warn"));
         } catch (error) {
             let message = error.response ? error.response.data.message : "Only image files are allowed!";
             toast.error(message);
         }
     };
+
+    const categorySelectHandler = async (e) => {
+        setCategoryId(e.target.value);
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories/${e.target.value}`);
+        setAttributes(data.category.attributes);
+    }
 
     return (
         <div className={styles.main}>
@@ -91,7 +89,9 @@ export default function NewProduct({ stores, categories, brands }) {
                                                 className={styles.productListImg}
                                                 src={`${process.env.NEXT_PUBLIC_thumbURL}/stores/${store.banner}`} />
                                         </div>
-                                        {store.title}
+                                        <div className={styles.productListItem}>
+                                            {store.title}
+                                        </div>
                                     </div>
                                 </MenuItem>
                             ))}
@@ -99,7 +99,7 @@ export default function NewProduct({ stores, categories, brands }) {
                         <br /><br />
                         <InputLabel>Select Category</InputLabel>
                         <Select fullWidth
-                            value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+                            value={categoryId} onChange={categorySelectHandler}>
                             {categories.map((category) => (
                                 <MenuItem value={category._id} key={category._id}>
                                     <div className={styles.ImageWithTitle}>
@@ -109,12 +109,24 @@ export default function NewProduct({ stores, categories, brands }) {
                                                     className={styles.productListImg}
                                                     src={`${process.env.NEXT_PUBLIC_thumbURL}/categories/${category.image}`} />}
                                         </div>
-                                        {category.title}
+                                        <div className={styles.productListItem}>
+                                            {category.title}
+                                        </div>
                                     </div>
                                 </MenuItem>
                             ))}
                         </Select>
                         <br /><br />
+                        {attributes.length > 0 &&
+                            <div>
+                                <TextField
+                                    fullWidth aria-disabled="true"
+                                    className={styles.addProductItem}
+                                    label='Product Variants' placeholder='Product Variants'
+                                    value={attributes}
+                                />
+                                <br /><br />
+                            </div>}
                         <InputLabel>Select Brand</InputLabel>
                         <Select fullWidth
                             value={brandId} onChange={(e) => setBrandId(e.target.value)}>
@@ -127,28 +139,14 @@ export default function NewProduct({ stores, categories, brands }) {
                                                     className={styles.productListImg}
                                                     src={`${process.env.NEXT_PUBLIC_thumbURL}/brands/${brand.image}`} />}
                                         </div>
-                                        {brand.title}
+                                        <div className={styles.productListItem}>
+                                            {brand.title}
+                                        </div>
                                     </div>
                                 </MenuItem>
                             ))}
                         </Select>
-
                         <br /><br />
-                        <InputLabel>Select Product Variations</InputLabel>
-                        <FormGroup className={styles.GroupCheckbox}>
-                            <FormControlLabel
-                                control={<Checkbox
-                                    color="primary"
-                                    checked={isSizes}
-                                    onChange={(e) => setIsSizes(e.target.checked)} />}
-                                label="Sizes" />
-                            <FormControlLabel
-                                control={<Checkbox
-                                    color="primary"
-                                    checked={isColors}
-                                    onChange={(e) => setIsColors(e.target.checked)} />}
-                                label="Colors" />
-                        </FormGroup>
                         <Button
                             onClick={handleSubmit}
                             type='submit'

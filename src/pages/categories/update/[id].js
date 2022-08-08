@@ -35,7 +35,6 @@ export default function UpdateCategory({ category, categories }) {
         setSelected(value);
     };
 
-
     const fileSelectedHandler = async (e) => {
         if (e.target.value) {
             const reader = new FileReader();
@@ -53,7 +52,7 @@ export default function UpdateCategory({ category, categories }) {
             const config = { headers: { 'Content-Type': 'multipart/form-data' } }
 
             await axios
-                .post(`${process.env.NEXT_PUBLIC_baseURL}/categories/upload-image/${category.slug}`, fd, config)
+                .post(`${process.env.NEXT_PUBLIC_baseURL}/categories/upload-image/${category._id}`, fd, config)
                 .then(({ data }) => toast.success(data.message))
                 .catch((err) => {
                     let message = err.response ? err.response.data.message : "Only image files are allowed!";
@@ -77,7 +76,6 @@ export default function UpdateCategory({ category, categories }) {
                 .then(({ data }) => {
                     console.log(data);
                     data.success && toast.success(data.message);
-                    // router.push("/categories");
                 }).catch(err => showNotification(err));
         } catch (error) {
             let message = err.response ? err.response.data.message : "Something went wrong!";

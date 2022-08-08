@@ -12,11 +12,12 @@ import { showNotification } from "utils/helper";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function NewProduct({ stores, categories, brands, product }) {
+export default function ProductUpdate({ stores, categories, brands, product }) {
     const [title, setTitle] = useState(product.title);
     const [storeId, setStoreId] = useState(product.store_id._id);
     const [categoryId, setCategoryId] = useState(product.category_id._id);
     const [brandId, setBrandId] = useState(product.brand_id._id);
+    const [attributes, setAttributes] = useState([product.category_id.attributes]);
 
     // clear form fields
     const clearForm = () => {
@@ -45,15 +46,20 @@ export default function NewProduct({ stores, categories, brands, product }) {
             await axios
                 .put(`${process.env.NEXT_PUBLIC_baseURL}/products/${product._id}`, productData)
                 .then(({ data }) => {
-                    console.log(data);
                     data.success && showNotification("", data.message, "success");
-                    clearForm();
-                }).catch(err => showNotification(err));
+                    // clearForm();
+                }).catch(err => showNotification("", err.response.data.message, "warn"));
         } catch (error) {
             let message = error.response ? error.response.data.message : "Only image files are allowed!";
             toast.error(message);
         }
     };
+
+    const categorySelectHandler = async (e) => {
+        setCategoryId(e.target.value);
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories/${e.target.value}`);
+        setAttributes(data.category.attributes);
+    }
 
     return (
         <div className={styles.main}>
@@ -90,7 +96,7 @@ export default function NewProduct({ stores, categories, brands, product }) {
                         <br /><br />
                         <InputLabel>Select Category</InputLabel>
                         <Select fullWidth
-                            value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+                            value={categoryId} onChange={categorySelectHandler}>
                             {categories.map((category) => (
                                 <MenuItem value={category._id} key={category._id}>
                                     <div className={styles.ImageWithTitle}>
@@ -106,6 +112,16 @@ export default function NewProduct({ stores, categories, brands, product }) {
                             ))}
                         </Select>
                         <br /><br />
+                        {attributes.length > 0 &&
+                            <div>
+                                <TextField
+                                    fullWidth aria-disabled="true"
+                                    className={styles.addProductItem}
+                                    label='Product Variants' placeholder='Product Variants'
+                                    value={attributes}
+                                />
+                                <br /><br />
+                            </div>}
                         <InputLabel>Select Brand</InputLabel>
                         <Select fullWidth
                             value={brandId} onChange={(e) => setBrandId(e.target.value)}>
@@ -123,9 +139,7 @@ export default function NewProduct({ stores, categories, brands, product }) {
                                 </MenuItem>
                             ))}
                         </Select>
-
                         <br /><br />
-
                         <Button
                             onClick={handleSubmit}
                             type='submit'

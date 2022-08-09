@@ -13,10 +13,10 @@ import Link from 'next/link';
 export default function Products({ products }) {
     const [data, setData] = useState(products);
 
-    const handleDelete = async (slug) => {
-        await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/products/${slug}`)
+    const handleDelete = async (id) => {
+        await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/products/${id}`)
             .then(({ data }) => toast.success(data.message));
-        setData(products.filter((item) => item.slug !== slug));
+        setData(products.filter((item) => item._id !== id));
     }
 
     const columns = [
@@ -87,15 +87,15 @@ export default function Products({ products }) {
             renderCell: (params) => {
                 return (
                     <>
-                        <Link href={"/products/" + params.row.slug}>
+                        <Link href={"/products/" + params.row._id}>
                             <button className={styles.productListEdit}>Details</button>
                         </Link>
-                        <Link href={"/products/update/" + params.row.slug}>
+                        <Link href={"/products/update/" + params.row._id}>
                             <button className={styles.productListEdit}>Edit</button>
                         </Link>
                         <DeleteOutline
                             className={styles.productListDelete}
-                            onClick={() => handleDelete(params.row.slug)}
+                            onClick={() => handleDelete(params.row._id)}
                         />
                     </>
                 );

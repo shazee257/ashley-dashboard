@@ -114,10 +114,10 @@ export default function ProductUpdate({ stores, categories, brands, product }) {
                         <br /><br />
                         {attributes.length > 0 &&
                             <div>
+                                <InputLabel>Attributes Selected</InputLabel>
                                 <TextField
                                     fullWidth aria-disabled="true"
                                     className={styles.addProductItem}
-                                    label='Product Variants' placeholder='Product Variants'
                                     value={attributes}
                                 />
                                 <br /><br />
@@ -161,8 +161,8 @@ export default function ProductUpdate({ stores, categories, brands, product }) {
 }
 
 export const getServerSideProps = async (context) => {
-    const { slug } = context.query;
-    const productData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/products/${slug}`);
+    const { productId } = context.query;
+    const productData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/products/p/${productId}`);
     const storesData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/stores`);
     const categoriesData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories`);
     const brandsData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/brands`);

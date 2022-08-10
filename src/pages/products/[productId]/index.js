@@ -43,10 +43,13 @@ export default function Variations({ product, variants }) {
         {
             field: "action", filterable: false, sortable: false,
             headerName: "Action",
-            width: 100,
+            width: 200,
             renderCell: (params) => {
                 return (
                     <>
+                        <Link href={`/products/${product._id}/${params.row._id}`}>
+                            <button className={styles.productListEdit}>Detail</button>
+                        </Link>
                         <Link href={`/products/${product._id}/update/${params.row._id}`}>
                             <button className={styles.productListEdit}>Edit</button>
                         </Link>

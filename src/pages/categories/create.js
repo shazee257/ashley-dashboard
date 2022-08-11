@@ -49,6 +49,7 @@ export default function NewCategory({ categories }) {
         setTitle("");
         setParentId("");
         setImage("");
+        setSelected([]);
         setFilename("Choose Image");
         setSelectedFile("");
     }

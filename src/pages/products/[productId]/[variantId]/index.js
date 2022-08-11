@@ -1,4 +1,4 @@
-import styles from 'styles/ProductIndex.module.css';
+import styles from 'styles/ProductFeatures.module.css';
 import axios from 'axios';
 import { DeleteOutline } from "@material-ui/icons";
 import { Button } from '@material-ui/core';
@@ -27,7 +27,7 @@ export default function Features({ product, features }) {
                 return (
                     <>
                         <div className={styles.productListItem}>
-                            <Image height={32} width={32}
+                            <Image height={26} width={26}
                                 className={styles.productListImg}
                                 src={`${process.env.NEXT_PUBLIC_uploadURL}/colors/${params.row.color.image}`} />
                         </div>
@@ -35,6 +35,28 @@ export default function Features({ product, features }) {
                     </>
                 )
             }
+        },
+        {
+            field: "images", headerName: "Feature Images", width: 300,
+
+            renderCell: (params) => {
+                return (
+                    <>
+                        {params.row.images.map((item, index) => {
+                            return (
+                                <div key={index} className={styles.productListItem}>
+                                    <Image height={26} width={26}
+                                        className={styles.productListImg}
+                                        src={`${process.env.NEXT_PUBLIC_thumbURL}/products/${item}`} />
+                                </div>
+                            )
+                        }
+                        )}
+                    </>
+                )
+            }
+
+
         },
         { field: "quantity", headerName: "Quantity", width: 150 },
         { field: "sku", headerName: "SKU", width: 150 },
@@ -61,7 +83,8 @@ export default function Features({ product, features }) {
     return (
         <div className={styles.productList}>
             <div className={styles.main}>
-                <h2 className={styles.productTitle}>Product Variants ~ Features</h2>
+                <h2 className={styles.productTitle}>
+                    <Link href={`/products/${product._id}`}>Product Variants</Link> ~ Features</h2>
                 <Link href={`/products/${product._id}/create`}>
                     <Button variant="contained"
                         color="primary" component="label"

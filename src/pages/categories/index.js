@@ -13,10 +13,10 @@ import Link from 'next/link';
 export default function Categories({ categories }) {
     const [data, setData] = useState(categories);
 
-    const handleDelete = async (slug) => {
-        await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/categories/${slug}`)
+    const handleDelete = async (id) => {
+        await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/categories/${id}`)
             .then(({ data }) => toast.success(data.message));
-        setData(categories.filter((item) => item.slug !== slug));
+        setData(categories.filter((item) => item._id !== id));
     }
 
     const columns = [
@@ -68,7 +68,7 @@ export default function Categories({ categories }) {
                         </Link>
                         <DeleteOutline
                             className={styles.productListDelete}
-                            onClick={() => handleDelete(params.row.slug)}
+                            onClick={() => handleDelete(params.row.id)}
                         />
                     </>
                 );

@@ -39,7 +39,7 @@ export default function Topbar() {
           </Typography>
         </div>
         <div className={styles.topCenter}>
-          <Typography component="h1" variant="h3" gutterBottom style={{ marginBottom: '0' }} >
+          <Typography component="h1" variant="h4" gutterBottom style={{ marginBottom: '0' }} >
             Admin Dashboard
           </Typography>
         </div>

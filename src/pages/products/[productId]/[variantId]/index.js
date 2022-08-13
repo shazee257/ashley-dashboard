@@ -12,12 +12,21 @@ import Link from 'next/link';
 
 export default function Features({ product, features }) {
     const [data, setData] = useState(features);
+    const [isImageSelected, setIsImageSelected] = useState(false);
+    const [image, setImage] = useState();
 
     const handleDelete = async (id) => {
         await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/products/${product._id}/${id}`)
             .then(({ data }) => toast.success(data.message));
         setData(variants.filter((item) => item._id !== id));
     }
+
+    const imageSelectHandler = (image) => {
+        setIsImageSelected(true);
+        setImage(image);
+    }
+
+
 
     const columns = [
         { field: "id", headerName: "ID", width: 330, hide: true },
@@ -38,7 +47,6 @@ export default function Features({ product, features }) {
         },
         {
             field: "images", headerName: "Feature Images", width: 300,
-
             renderCell: (params) => {
                 return (
                     <>
@@ -47,11 +55,11 @@ export default function Features({ product, features }) {
                                 <div key={index} className={styles.productListItem}>
                                     <Image height={26} width={26}
                                         className={styles.productListImg}
-                                        src={`${process.env.NEXT_PUBLIC_thumbURL}/products/${item}`} />
+                                        src={`${process.env.NEXT_PUBLIC_thumbURL}/products/${item}`}
+                                        onClick={() => imageSelectHandler(item)} />
                                 </div>
                             )
-                        }
-                        )}
+                        })}
                     </>
                 )
             }
@@ -96,6 +104,11 @@ export default function Features({ product, features }) {
             </div>
 
             <MuiGrid columns={columns} data={data} />
+            <br /><br />
+            {isImageSelected &&
+                <div style={{ width: '800px', height: '450px', border: '1px solid gray', justifyContent: 'center', display: 'flex' }}>
+                    <Image height={400} width={700} src={`${process.env.NEXT_PUBLIC_uploadURL}/products/${image}`} />
+                </div>}
             <br /><br />
         </div>
     );

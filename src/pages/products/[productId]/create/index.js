@@ -31,7 +31,6 @@ export default function NewVariant({ product }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-
         const variant = {
             size: sizeRef.current.value,
             sale_price: salePriceRef.current.value,

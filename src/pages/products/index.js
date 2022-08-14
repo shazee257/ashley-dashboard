@@ -83,12 +83,12 @@ export default function Products({ products }) {
         {
             field: "action", filterable: false, sortable: false,
             headerName: "Action",
-            width: 200,
+            width: 240,
             renderCell: (params) => {
                 return (
                     <>
-                        <Link href={"/products/" + params.row._id}>
-                            <button className={styles.productListEdit}>Details</button>
+                        <Link href={`/products/${params.row._id}`}>
+                            <button className={styles.productListEdit}>Product Variants</button>
                         </Link>
                         <Link href={"/products/update/" + params.row._id}>
                             <button className={styles.productListEdit}>Edit</button>

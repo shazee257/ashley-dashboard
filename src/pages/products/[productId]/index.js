@@ -9,8 +9,8 @@ import MuiGrid from "components/MuiGrid/MuiGrid";
 import { useState } from 'react';
 import Link from 'next/link';
 
-export default function Variations({ product, variants }) {
-    const [data, setData] = useState(variants);
+export default function Variations({ product }) {
+    const [data, setData] = useState(product.variants);
 
     const handleDelete = async (id) => {
         await axios.delete(`${process.env.NEXT_PUBLIC_baseURL}/products/${product._id}/${id}`)
@@ -22,7 +22,7 @@ export default function Variations({ product, variants }) {
         { field: "id", headerName: "ID", width: 330, hide: true },
         { field: "size", headerName: "Product Sizes", width: 160 },
         {
-            field: "sale_price", headerName: "Sale Price", width: 150, type: "number",
+            field: "sale_price", headerName: "Sale Price", width: 140, type: "number",
             renderCell: (params) => {
                 return (
                     <span className={styles.price_value}>{`$${params.value.toFixed(2)}`}</span>
@@ -36,18 +36,18 @@ export default function Variations({ product, variants }) {
         { field: "description", headerName: "Description", width: 220 },
         { field: "dimensions", headerName: "Dimensions", width: 220 },
         {
-            field: "createdAt", headerName: "Added on", width: 140, type: 'dateTime',
+            field: "createdAt", headerName: "Added on", width: 140, type: 'dateTime', hide: true,
             valueFormatter: (params) => formatDate(params.value),
         },
         {
             field: "action", filterable: false, sortable: false,
             headerName: "Action",
-            width: 200,
+            width: 240,
             renderCell: (params) => {
                 return (
                     <>
-                        <Link href={`/products/${product._id}/${params.row._id}`}>
-                            <button className={styles.productListEdit}>Detail</button>
+                        <Link href={`/products/${product._id}/${params.row._id}?size=${params.row.size}`}>
+                            <button className={styles.productListEdit}>Product Features</button>
                         </Link>
                         <Link href={`/products/${product._id}/update/${params.row._id}`}>
                             <button className={styles.productListEdit}>Edit</button>
@@ -61,11 +61,6 @@ export default function Variations({ product, variants }) {
             },
         },
     ];
-
-    // const variantSelectHandler = (e) => {
-    //     const variant = e.row;
-    //     console.log(e.row);
-    // }
 
     return (
         <div className={styles.productList}>
@@ -94,9 +89,8 @@ export default function Variations({ product, variants }) {
 export async function getServerSideProps(context) {
     const { productId } = context.query;
     const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/products/p/${productId}`);
-    let variants;
     if (data.product.is_sizes_with_colors) {
-        variants = data.product.variants.map((v) => {
+        data.product.variants = data.product.variants.map((v) => {
             v.id = v._id;
             return v;
         })
@@ -104,8 +98,7 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
-            product: data.product,
-            variants: variants,
+            product: data.product
         },
     };
 }

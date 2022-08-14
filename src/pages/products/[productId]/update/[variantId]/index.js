@@ -52,29 +52,35 @@ export default function NewVariant({ product, variant }) {
                     </div>
                     <br />
                     <form className={styles.MainForm}>
-                        <div className={styles.LeftFormFields}>
+                        <div className={styles.FormTopFields}>
                             <TextField
                                 className={styles.addProductItem}
-                                label='Product Size' placeholder='Enter Product Size' variant='outlined'
+                                label='Product Size'
+                                placeholder='Enter Product Size'
+                                variant='outlined'
                                 value={size} onChange={(e) => setSize(e.target.value)} />
                             <br /><br />
                             <TextField
-                                className={styles.addProductItem} variant='outlined' type='number'
+                                inputProps={{ step: '0.01', min: '0', max: '100', type: 'number' }}
+                                className={styles.addProductItem} variant='outlined'
                                 label='Sale Price' placeholder='Enter Sale Price'
                                 value={salePrice} onChange={(e) => setSalePrice(e.target.value)} />
                             <br /><br />
                             <TextField
+                                inputProps={{ step: '0.01', min: '0', max: '100', type: 'number' }}
                                 className={styles.addProductItem} variant='outlined' type='number'
                                 label='Purchase Price' placeholder='Enter Purchase Price'
                                 value={purchasePrice} onChange={(e) => setPurchasePrice(e.target.value)} />
                         </div>
-                        <div className={styles.Editor}>
-                            <InputLabel htmlFor="detail1">Description</InputLabel>
-                            <ReactQuill value={description} onChange={setDescription} />
-                        </div>
-                        <div className={styles.Editor}>
-                            <InputLabel htmlFor="detail1">Dimensions</InputLabel>
-                            <ReactQuill value={dimensions} onChange={setDimensions} />
+                        <div className={styles.Editors}>
+                            <div className={styles.Editor}>
+                                <InputLabel htmlFor="detail1">Description</InputLabel>
+                                <ReactQuill value={description} onChange={setDescription} />
+                            </div>
+                            <div className={styles.DimensionsEditor}>
+                                <InputLabel htmlFor="detail1">Dimensions</InputLabel>
+                                <ReactQuill value={dimensions} onChange={setDimensions} />
+                            </div>
                         </div>
                     </form>
                     <Button

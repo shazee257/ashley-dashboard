@@ -91,11 +91,11 @@ export default function Categories({ categories }) {
 }
 
 export const getServerSideProps = async () => {
-    const categoryData = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories`);
+    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_baseURL}/categories`);
 
     return {
         props: {
-            categories: categoryData.data.categories
+            categories: data.categories
         }
     };
 }

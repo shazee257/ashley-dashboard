@@ -6,6 +6,7 @@ import { Grid, Paper, TextField, Button, Typography, Select, InputLabel, MenuIte
 import axios from 'axios';
 import { showNotification } from "utils/helper";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function NewBrand() {
     const titleRef = useRef(null);
@@ -38,7 +39,7 @@ export default function NewBrand() {
         const fd = new FormData();
         fd.append('title', titleRef.current.value);
         fd.append('description', descriptionRef.current.value);
-        fd.append('image', selectedFile);
+        fd.append('image', image);
 
         const config = {
             headers: { 'Content-Type': 'multipart/form-data' }
@@ -96,7 +97,7 @@ export default function NewBrand() {
                 </Paper>
             </Grid>
             <div className={styles.productImage}>
-                {(selectedFile) && (<img src={image} className={styles.imgObject}></img>)}
+                {(image) && (<Image height={400} width={400} src={image} className={styles.imgObject} />)}
             </div>
         </div>
     );

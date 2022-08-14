@@ -20,7 +20,6 @@ export default function NewCategory({ categories }) {
     const [image, setImage] = useState("");
     const [filename, setFilename] = useState("Choose Image");
     const [selectedFile, setSelectedFile] = useState("");
-    const [imageSrc, setImageSrc] = useState("");
 
     const classes = useStyles();
     const [selected, setSelected] = useState([]);
@@ -40,7 +39,6 @@ export default function NewCategory({ categories }) {
         const reader = new FileReader();
         reader.onload = () => {
             if (reader.readyState === 2) setImage(reader.result);
-            setImageSrc(reader.result);
         }
         reader.readAsDataURL(e.target.files[0]);
         setSelectedFile(e.target.files[0]);
@@ -175,9 +173,8 @@ export default function NewCategory({ categories }) {
             </Grid>
             <div className="imageWithButton">
                 <div className={styles.productImage}>
-                    {(imageSrc) && (
-                        <Image src={imageSrc}
-                            height={400} width={400} className={styles.imgObject} />)}
+                    {image &&
+                        <Image src={image} height={400} width={400} className={styles.imgObject} />}
                 </div>
                 <div className={styles.imageButtonContainer}>
                     <div><small>Only jpg, png, gif, svg, webp images are allowed</small></div>

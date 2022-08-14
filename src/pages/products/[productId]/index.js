@@ -66,14 +66,14 @@ export default function Variations({ product }) {
         <div className={styles.productList}>
             <div className={styles.main}>
                 <h2 className={styles.productTitle}>Product Variations</h2>
-                <Button variant="contained"
-                    color="primary" component="label"
-                    className={styles.createNewLink}>Create New</Button>
+                <Link href={`/products/${product._id}/create`}>
+                    <Button variant="contained"
+                        color="primary" component="label"
+                        className={styles.createNewLink}>Create New</Button>
+                </Link>
             </div>
             <div className={styles.main}>
-                <Link href={`/products/${product._id}`}>
-                    <h4 className={styles.productTitle}>{product.title}</h4>
-                </Link>
+                <h4 className={styles.productTitle}>{product.title}</h4>
             </div>
 
             <MuiGrid columns={columns} data={data} />

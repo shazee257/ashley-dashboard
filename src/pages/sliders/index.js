@@ -10,6 +10,9 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+
+
+
 export const Modal = ({ src, alt, caption, onClose }) => {
     return (
         <div className={styles.modal}>
@@ -34,11 +37,6 @@ export default function Customers({ sliders }) {
             .then(({ data }) => toast.success(data.message));
         setData(sliders.filter((item) => item._id !== id));
     }
-
-    // open image in new tab
-    // const imageHandler = (image) => {
-    //     window.open(`${process.env.NEXT_PUBLIC_uploadURL}/slider/${image}`, '_blank');
-    // }
 
     const columns = [
         { field: "id", headerName: "ID", width: 330, hide: true },
@@ -107,8 +105,6 @@ export default function Customers({ sliders }) {
                         onClose={() => setIsOpen(false)}
                     />)}
             </div>
-
-
         </div>
     );
 }

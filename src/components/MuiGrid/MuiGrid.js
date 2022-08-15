@@ -1,4 +1,4 @@
-import { DataGrid } from "@material-ui/data-grid";
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { useState } from "react";
 
 const MuiGrid = ({ data, columns, clickHanlder }) => {
@@ -16,6 +16,8 @@ const MuiGrid = ({ data, columns, clickHanlder }) => {
             autoHeight={true}
             onRowClick={clickHanlder}
             disableSelectionOnClick={true}
+            components={{ Toolbar: GridToolbar }}
+            componentsProps={{ toolbar: { printOptions: { disableToolbarButton: true } } }}
         />
     )
 }

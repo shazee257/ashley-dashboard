@@ -45,7 +45,7 @@ export default function NewVariant({ product, variant }) {
             <Grid>
                 <Paper elevation={0} style={{ padding: '20px', width: '1400px' }}>
                     <Grid align='left'>
-                        <h2>Add New Product Variant</h2>
+                        <h2>Update Product Variant</h2>
                     </Grid>
                     <div className={styles.main}>
                         <h4 className={styles.productTitle}>Product Title: <i>{product.title}</i> </h4>

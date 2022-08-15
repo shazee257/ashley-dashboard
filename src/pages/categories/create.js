@@ -7,7 +7,7 @@ import {
     Typography, Select, InputLabel,
     MenuItem, Checkbox,
     ListItemIcon, ListItemText,
-} from '@material-ui/core'
+} from '@mui/material';
 import axios from 'axios';
 import { showNotification } from "utils/helper";
 import { MenuProps, useStyles, options } from "components/FilterOptions/FilterOptions";
@@ -97,19 +97,17 @@ export default function NewCategory({ categories }) {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                         />
-                        <br /><br />
-
+                        <br />
                         <InputLabel>Parent Category</InputLabel>
                         <Select fullWidth displayEmpty
                             label="Parent Category"
                             value={parentId}
-                            onChange={(e) => setParentId(e.target.value)}
-                        >
-                            <MenuItem value=""><em>None</em></MenuItem>
+                            onChange={(e) => setParentId(e.target.value)}>
+                            <MenuItem style={{ display: 'flex', justifyContent: 'left' }} value=""><em>None</em></MenuItem>
                             {categories.map((category) => (
-                                <MenuItem value={category._id} key={category._id}>
+                                <MenuItem style={{ display: 'flex', justifyContent: 'left' }} value={category._id} key={category._id}>
                                     <div className={styles.productListItem}>
-                                        <div className={styles.productListItem}>
+                                        <div style={{ marginRight: '10px' }}>
                                             <Image height={32} width={32}
                                                 className={styles.productListImg}
                                                 src={`${process.env.NEXT_PUBLIC_thumbURL}/categories/${category.image}`} />
@@ -132,28 +130,22 @@ export default function NewCategory({ categories }) {
                             renderValue={(selected) => selected.join(", ")}
                             MenuProps={MenuProps}
                         >
-                            <MenuItem
+                            <MenuItem style={{ display: 'flex', justifyContent: 'left' }}
                                 value="all"
-                                classes={{
-                                    root: isAllSelected ? classes.selectedAll : ""
-                                }}
-                            >
+                                classes={{ root: isAllSelected ? classes.selectedAll : "" }}>
                                 <ListItemIcon>
                                     <Checkbox
                                         classes={{ indeterminate: classes.indeterminateColor }}
                                         checked={isAllSelected}
-                                        indeterminate={
-                                            selected.length > 0 && selected.length < options.length
-                                        }
+                                        indeterminate={selected.length > 0 && selected.length < options.length}
                                     />
                                 </ListItemIcon>
                                 <ListItemText
                                     classes={{ primary: classes.selectAllText }}
-                                    primary="Select All"
-                                />
+                                    primary="Select All" />
                             </MenuItem>
                             {options.map((option) => (
-                                <MenuItem key={option} value={option}>
+                                <MenuItem style={{ display: 'flex', justifyContent: 'left' }} key={option} value={option}>
                                     <ListItemIcon>
                                         <Checkbox checked={selected.indexOf(option) > -1} />
                                     </ListItemIcon>

@@ -2,7 +2,7 @@ import styles from "styles/BrandUpdate.module.css";
 import { useEffect, useState, useRef } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Grid, Paper, TextField, Button, Typography } from '@material-ui/core'
+import { Grid, Paper, TextField, Button, Typography } from '@mui/material'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { showNotification } from "utils/helper";
@@ -93,16 +93,21 @@ export default function UpdateBrand({ brand }) {
                         fullWidth multiline maxRows={5}
                         inputRef={descriptionRef}
                     />
-                    <br /><br />
-
-                    <div className={styles.addProductItem}>
-                        <Button variant="contained" component="label" >Choose Image
+                    <br />
+                    <div>
+                        <Button variant="contained" component="label">Choose Image
                             <input type="file" name="image" hidden onChange={fileSelectedHandler} accept="image/*" />
                         </Button>
                         <div><small>Only jpg, png, gif, svg images are allowed</small></div>
                     </div>
                     <br />
-                    <Button onClick={handleSubmit} type='submit' color='primary' variant="contained" className={styles.btnstyle} fullWidth>Update Brand</Button>
+                    <Button
+                        fullWidth
+                        onClick={handleSubmit}
+                        type='submit'
+                        color='primary'
+                        variant="contained"
+                        className={styles.btnstyle}>Update Brand</Button>
                     <br /><br />
                     <Typography >
                         <Link href="/brands">Back to Brands</Link>

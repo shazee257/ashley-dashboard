@@ -1,7 +1,7 @@
 import styles from 'styles/Brands.module.css';
 import axios from 'axios';
-import { DeleteOutline } from "@material-ui/icons";
-import { Button } from '@material-ui/core';
+import { DeleteOutline } from "@mui/icons-material";
+import { Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MuiGrid from 'components/MuiGrid/MuiGrid';

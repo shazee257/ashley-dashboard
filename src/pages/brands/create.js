@@ -2,7 +2,7 @@ import styles from "styles/BrandNew.module.css";
 import { useState, useRef } from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Grid, Paper, TextField, Button, Typography, Select, InputLabel, MenuItem, FormControl } from '@material-ui/core'
+import { Grid, Paper, TextField, Button, Typography } from '@mui/material'
 import axios from 'axios';
 import { showNotification } from "utils/helper";
 import Link from "next/link";
@@ -61,7 +61,7 @@ export default function NewBrand() {
     return (
         <div className={styles.main}>
             <Grid>
-                <Paper elevation={0} style={{ padding: '20px', width: '400px' }}>
+                <Paper elevation={0} style={{ padding: '20px', width: '500px' }}>
                     <Grid align='left'>
                         <h2>New Brand</h2>
                     </Grid>
@@ -80,14 +80,14 @@ export default function NewBrand() {
                             placeholder="Brand Description"
                             fullWidth multiline maxRows={5}
                             inputRef={descriptionRef} />
-                        <br /><br />
-
-                        <div className={styles.addProductItem}>
+                        <br />
+                        <div>
                             <Button variant="contained" component="label" >Choose Image
                                 <input type="file" name="image" hidden onChange={fileSelectedHandler} accept="image/*" />
                             </Button>
                             <div><small>Only jpg, png, gif, svg, webp images are allowed</small></div>
                         </div>
+                        <br />
                         <Button onClick={handleSubmit} type='submit' color='primary' variant="contained" style={{ margin: '8px 0' }} fullWidth>Add Brand</Button>
                     </form>
                     <br />

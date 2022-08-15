@@ -47,11 +47,11 @@ export default function Sidebar() {
           </div>
           <ul className={styles.sidebarList} hidden={isClicked1}>
 
-            <li className={`${styles.li} ${router.pathname == "/" ? styles.active : ""}`}>
+            {/* <li className={`${styles.li} ${router.pathname == "/" ? styles.active : ""}`}>
               <Link href='/' className={`${styles.sidebarListItem} ${styles.link}`}>
                 <a className={styles.anchor}>Home</a>
               </Link>
-            </li>
+            </li> */}
 
             <li className={`${styles.li} ${RegExp(/products/).test(router.pathname) ? styles.active : ""}`}>
               <Link href='/products' className={`${styles.sidebarListItem} ${styles.link}`}>

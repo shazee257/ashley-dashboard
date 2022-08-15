@@ -7,7 +7,7 @@ export default function Home() {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData) router.push("/");
+    if (userData) router.push("/products");
   }, [])
 
   return (

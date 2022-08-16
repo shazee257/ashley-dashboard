@@ -92,7 +92,7 @@ export default function ProductFeatureNew({ productId, variantId, productTitle, 
                 <Grid className={styles.mainGrid}>
                     <Paper elevation={0} style={{ padding: '20px', width: '400px' }}>
                         <form encType="multipart/form-data">
-                            <InputLabel>Select Color</InputLabel>
+                            <InputLabel>Select Product Color</InputLabel>
                             <Select
                                 fullWidth
                                 label="Color"
